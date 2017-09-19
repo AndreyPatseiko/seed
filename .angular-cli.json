@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "test-wallet-wp"
+    "name": "test-wallet-wp",
+    "ejected": true
   },
   "apps": [
     {
@@ -52,6 +53,7 @@
   },
   "defaults": {
     "styleExt": "sass",
-    "component": {}
+    "component": {
+    }
   }
 }
