@@ -1,9 +1,6 @@
 <div style="text-align:center">
-  <h1>
-    Test Wallets!
-  </h1>
+  <h1>Random normal wallets and brain wallets creation!</h1>
 </div>
-<p>We use web3js 1.0.0_beta20</p>
 
 <div class="input-data">
   <div class="wallet-name">
@@ -12,10 +9,11 @@
   <div class="phrase">
     <textarea [value]="wordsList" #words></textarea>
   </div>
+  <div><label>Password <input type="text" #pass></label></div>
   <div class="btns">
     <button type="button" (click)="generatePhrase()">Generate phrase</button>
-    <button type="button" (click)="test()">TEST</button>
-    <button type="button" (click)="createBrainWalet(name.value, words.value)">Create brain wallet</button>
+    <button type="button" (click)="createSimpleWalet(name.value)">Random normal wallet</button>
+    <button type="button" (click)="createBrainWalet(name.value, words.value, pass.value)">Create brain wallet</button>
     <button type="button" (click)="getWallets()">refresh wallets</button>
     <button type="button" (click)="getBalance(balnceAddress.value)">Get balance</button>
   </div>
@@ -24,14 +22,16 @@
 <div class="wallets-info">
   <a href="https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md">Список поддерживаемых языков для
     генерации 12 слов</a>
+  <p>We use web3js 1.0.0_beta20</p>
+  <p>Check generating data from brain wallets <a href="https://iancoleman.github.io/bip39/" target="_blank">this</a></p>
   <div>
-    <input type="text" #balnceAddress>
-    <p>Balance : {{_balance}}</p>
+    <label>Account address for check balance : <input type="text" #balnceAddress></label>
   </div>
   <div *ngFor="let wallet of walletsList">
     <p>Wallet walletName: {{wallet?.nameWallet}}</p>
     <p>Wallet address: {{wallet?.address}}</p>
     <p>Wallet privateKey: {{wallet?.privateKey}}</p>
-    <p>Wallet 12 word list: {{wallet?.words}}</p>
+    <p *ngIf="wallet.words">Wallet 12 word list: {{wallet?.words}}</p>
+    <p *ngIf="wallet.password">Wallet 12 word password: {{wallet?.password}}</p>
   </div>
 </div>
