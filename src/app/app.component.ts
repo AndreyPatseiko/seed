@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import Mnemonic from 'bitcore-mnemonic';
 import bip39 from 'bip39';
 import bip32 from 'ripple-bip32';
+import CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,15 @@ export class AppComponent implements OnInit {
     if (this.walletsList.length === 0) {
       this.getWallets();
     }
+
+    // hide elements in hash functions
+    const phrase = 'demise outdoor lesson swing birth century spike only chef owner lend embody'
+    const key = 'EthWall'
+    let hash = CryptoJS.SHA256(phrase);
+    console.log('hash = ' , hash.toString(CryptoJS.enc.Hex));
+    let hash2 = CryptoJS.HmacSHA256(phrase, key);
+    console.log('hash2 = ' , hash2.toString(CryptoJS.enc.Hex));
+
   }
 
   createSimpleWalet(walletName) {
@@ -62,7 +72,7 @@ export class AppComponent implements OnInit {
       console.log('privateKey key =', privKey);
 
       const newAccount = this.web3.eth.accounts.privateKeyToAccount(privKey);
-      if (password)  newAccount['password'] = password;
+      if (password) newAccount['password'] = password;
       newAccount['nameWallet'] = walletName;
       newAccount['words'] = words;
       console.log(newAccount)
