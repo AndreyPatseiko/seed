@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+
+declare const Buffer
 import Web3 from 'web3';
 import Mnemonic from 'bitcore-mnemonic';
 import bip39 from 'bip39';
@@ -6,6 +8,11 @@ import bip32 from 'ripple-bip32';
 import CryptoJS from 'crypto-js';
 import * as nacl from 'tweetnacl';
 import base64 from 'base-64';
+import createHmac from 'hmac';
+import Blake2s from 'blake2s';
+import convertHex from 'convert-hex';
+import {unescape} from "querystring";
+import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 @Component({
   selector: 'app-root',
@@ -31,44 +38,52 @@ export class AppComponent implements OnInit {
       this.getWallets();
     }
 
-    // hide elements in hash functions
-    const phrase = 'demise outdoor lesson swing birth century spike only chef owner lend embody'
-    const key = 'EthWall'
-    let hash = CryptoJS.SHA256(phrase);
-    // console.log('hash = ' , hash.toString(CryptoJS.enc.Hex));
-    let hash2 = CryptoJS.HmacSHA256(phrase, key);
-    // console.log('hash2 = ' , hash2.toString(CryptoJS.enc.Hex));
+    // Encrypte entropy into file
+    const pass2 = '123Qwe';
+    const random24 = this.nacl.randomBytes(24);
+    const nonce = new Uint8Array(random24);
+    const nonceStr = Buffer.from(nonce).toString('base64');
+    console.log('nonceStr =', nonceStr);
 
-    // =====    phrase to entropy and return frase    ========
+    const encrypteKey = CryptoJS.HmacSHA256(pass2, 'EthWall').toString(CryptoJS.enc.Hex); // Encrypte password custom password
+    const key = convertHex.hexToBytes(encrypteKey);
+    const keyStr =  Buffer.from(encrypteKey, 'hex').toString('base64')
+    // console.log('key transform = ', Buffer.from([27, 51, -41, -91, -23, -76, 11, 88, -80, -27, -90, 55, -4, -78, 27, -122, -64, -14, -31, -115, -126, 22, 68, -23, 68, -59, 42, -39, -114, -64, -119, 35]).toString('base64'))
+    console.log('keyStr  = ', keyStr);  //keyStr: = GzPXpem0C1iw5aY3/LIbhsDy4Y2CFkTpRMUq2Y7AiSM=
+
+    const mnemonicPhrase = 'blush topple dove invest firm black narrow rapid wish science doll interest';
+    const mnemonicEntropy = this.bip39.mnemonicToEntropy(mnemonicPhrase);
+    // console.log('mnemonicEntropy ', mnemonicEntropy)
+    const mnemonicEntropyBytes = new Uint8Array(Buffer.from(mnemonicEntropy, 'hex'));
+    console.log('mnemonicEntropy = ', mnemonicEntropy, '|| mnemonicEntropyBytes = ', mnemonicEntropyBytes);
+
+    const chiper = this.nacl.secretbox(mnemonicEntropyBytes, nonce, new Uint8Array(key));
+    const cipherStr = Buffer.from(chiper).toString('base64');
+    console.log('cipherStr =', cipherStr);
+
+    console.log('================ Decode ========================');
+    const _nonceStr = nonceStr;
+    // const _nonceStr = '8RyMa5LN59rTpO+72QmjIbXZTeMmVNOA';
+    const _cipherStr = cipherStr;
+    // const _cipherStr = 'yBxlSOlnB8mEDxRkLyTffq3QBfx+oxf/NBr+nxaHTLE=';
+    console.log('_cipherStr =', _cipherStr);
+    const _chiper = Buffer.from(_cipherStr, 'base64');
+    console.log('_chiper ', _chiper);
+    const _nonce = Buffer.from(_nonceStr, 'base64');
+
+    const decryptedMsg3 = this.nacl.secretbox.open(new Uint8Array(_chiper), new Uint8Array(_nonce), new Uint8Array(key))
+    console.log('decryptedMsg3 = ', decryptedMsg3);
+    const _message = Buffer.from(decryptedMsg3).toString('hex');
+    console.log('_message = ', _message)
+    console.log('phrase = ', this.bip39.entropyToMnemonic(_message))
+    // console.log(CryptoJS)
+
+    // =====    phrase to entropy and return phrase    ========
     // console.log('bip39 ', this.bip39)
-    // const mnemonicEntropy = this.bip39.mnemonicToEntropy(phrase);
+    // const mnemonicEntropy = this.bip39.mnemonicToEntropy(mnemonicPhrase);
     // const praseFromEntropy = this.bip39.entropyToMnemonic(mnemonicEntropy);
     // console.log('mnemonicEntropy = ', mnemonicEntropy);
     // console.log('praseFromEntropy = ', praseFromEntropy);
-
-    // Шифрование фразы в файл
-      const _password = 'qweqweQ1'
-      const _mnemonicEntropy =  '3a53a601ee016a4af474d82753c5ffa4'
-      const _praseFromEntropy =  'demise outdoor lesson swing birth century spike only chef owner lend embody'
-
-      const _key = CryptoJS.SHA256(_password);
-      const _nonce = this.nacl.randomBytes(24)
-      // const _nonceStr = CryptoJS.enc.Base64.stringify(_nonce)
-
-      // const _cipher = this.nacl.secretbox(_mnemonicEntropy, _nonce, _key)
-
-      console.log('testPassword = ', _password, 'testKey 32 bytes =', _key, 'nonce = ', _nonce )
-      // console.log('nonceStr = ', _nonceStr, 'cipher =',  )
-
-      const finishNonce = "+Gyeghrvh6EtZXh7rKYLtHhJYfkRunrk";
-      const finishCipher = "JP9Kj7cCOCvY1EUVlvRPLpbvNuvD5sQkti+6uXX9aZDAkTDivp0KLGx8VLjWiLWdXlQCqpkqUE1kPBxpeFsGh9aiuPIZ0cso0C7DnQx1Yk2db/Eo4eMNx0c="
-
-      console.log(CryptoJS)
-      const cipher = base64.decode(finishCipher)
-      const nonce = base64.decode(finishNonce)
-      const _entropy = this.nacl.secretbox(cipher, nonce, _key)
-      console.log('cipher ', cipher, 'nonce ', nonce, '_entropy ', _entropy)
-
   }
 
   createSimpleWalet(walletName) {
