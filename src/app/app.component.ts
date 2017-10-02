@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-declare const Buffer
+declare const Buffer;
 import Web3 from 'web3';
 import Mnemonic from 'bitcore-mnemonic';
 import bip39 from 'bip39';
@@ -8,11 +8,6 @@ import bip32 from 'ripple-bip32';
 import CryptoJS from 'crypto-js';
 import * as nacl from 'tweetnacl';
 import base64 from 'base-64';
-import createHmac from 'hmac';
-import Blake2s from 'blake2s';
-import convertHex from 'convert-hex';
-import {unescape} from "querystring";
-import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 @Component({
   selector: 'app-root',
@@ -46,8 +41,9 @@ export class AppComponent implements OnInit {
     console.log('nonceStr =', nonceStr);
 
     const encrypteKey = CryptoJS.HmacSHA256(pass2, 'EthWall').toString(CryptoJS.enc.Hex); // Encrypte password custom password
-    const key = convertHex.hexToBytes(encrypteKey);
-    const keyStr =  Buffer.from(encrypteKey, 'hex').toString('base64')
+    const key = Buffer.from(encrypteKey, 'hex');
+    console.log('key', key);
+    const keyStr =  Buffer.from(encrypteKey, 'hex').toString('base64');
     // console.log('key transform = ', Buffer.from([27, 51, -41, -91, -23, -76, 11, 88, -80, -27, -90, 55, -4, -78, 27, -122, -64, -14, -31, -115, -126, 22, 68, -23, 68, -59, 42, -39, -114, -64, -119, 35]).toString('base64'))
     console.log('keyStr  = ', keyStr);  //keyStr: = GzPXpem0C1iw5aY3/LIbhsDy4Y2CFkTpRMUq2Y7AiSM=
 
@@ -57,7 +53,7 @@ export class AppComponent implements OnInit {
     const mnemonicEntropyBytes = new Uint8Array(Buffer.from(mnemonicEntropy, 'hex'));
     console.log('mnemonicEntropy = ', mnemonicEntropy, '|| mnemonicEntropyBytes = ', mnemonicEntropyBytes);
 
-    const chiper = this.nacl.secretbox(mnemonicEntropyBytes, nonce, new Uint8Array(key));
+    const chiper = this.nacl.secretbox(mnemonicEntropyBytes, nonce, key);
     const cipherStr = Buffer.from(chiper).toString('base64');
     console.log('cipherStr =', cipherStr);
 
@@ -73,10 +69,9 @@ export class AppComponent implements OnInit {
 
     const decryptedMsg3 = this.nacl.secretbox.open(new Uint8Array(_chiper), new Uint8Array(_nonce), new Uint8Array(key))
     console.log('decryptedMsg3 = ', decryptedMsg3);
-    const _message = Buffer.from(decryptedMsg3).toString('hex');
-    console.log('_message = ', _message)
-    console.log('phrase = ', this.bip39.entropyToMnemonic(_message))
-    // console.log(CryptoJS)
+    const _entropy = Buffer.from(decryptedMsg3).toString('hex');
+    console.log('_message = ', _entropy);
+    console.log('phrase = ', this.bip39.entropyToMnemonic(_entropy))
 
     // =====    phrase to entropy and return phrase    ========
     // console.log('bip39 ', this.bip39)
