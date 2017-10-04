@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 
 declare const Buffer;
 import Web3 from 'web3';
@@ -7,7 +7,8 @@ import bip39 from 'bip39';
 import bip32 from 'ripple-bip32';
 import CryptoJS from 'crypto-js';
 import * as nacl from 'tweetnacl';
-import base64 from 'base-64';
+
+// import base64 from 'base-64';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import base64 from 'base-64';
   styleUrls: ['./app.component.sass']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
+  msSupportDownload: boolean = false;
   web3: Web3;
   walletsList = [];
   wordsList = '';
@@ -28,11 +30,26 @@ export class AppComponent implements OnInit {
     this.web3 = new Web3('http://192.168.11.214:5145');
   }
 
+  ngAfterViewInit() {
+    this.msSupportDownload = !!window.navigator.msSaveOrOpenBlob; // From save file in all browsers
+  }
+
+  // Save only IE
+  saveFile(img, canvasForImg) {
+    try {
+      const canvas = canvasForImg;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      window.navigator.msSaveBlob(canvas.msToBlob(), 'qr-code.png');
+    } catch (e) {
+      throw e;
+    }
+  }
+
   ngOnInit() {
     if (this.walletsList.length === 0) {
       this.getWallets();
     }
-
     // Encrypte entropy into file
     const pass2 = '123Qwe';
     const random24 = this.nacl.randomBytes(24);
@@ -43,7 +60,7 @@ export class AppComponent implements OnInit {
     const encrypteKey = CryptoJS.HmacSHA256(pass2, 'EthWall').toString(CryptoJS.enc.Hex); // Encrypte password custom password
     const key = Buffer.from(encrypteKey, 'hex');
     console.log('key', key);
-    const keyStr =  Buffer.from(encrypteKey, 'hex').toString('base64');
+    const keyStr = Buffer.from(encrypteKey, 'hex').toString('base64');
     // console.log('key transform = ', Buffer.from([27, 51, -41, -91, -23, -76, 11, 88, -80, -27, -90, 55, -4, -78, 27, -122, -64, -14, -31, -115, -126, 22, 68, -23, 68, -59, 42, -39, -114, -64, -119, 35]).toString('base64'))
     console.log('keyStr  = ', keyStr);  //keyStr: = GzPXpem0C1iw5aY3/LIbhsDy4Y2CFkTpRMUq2Y7AiSM=
 
