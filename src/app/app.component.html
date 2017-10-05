@@ -20,6 +20,22 @@
 </div>
 
 <div class="wallets-info">
+  <div>
+    <h2>import file</h2>
+    <div
+      class="drop-area"
+      [ngClass]="borderDropArea ? 'over': ''"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragOut($event)">
+      {{accountFileName}}
+      <label for="input">Add json file</label>
+      <input #fileInput id="input" hidden type="file" accept="text/plain, .json" multiple (change)="openFile($event)">
+    </div>
+
+  </div>
+
+
   <a href="https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md">Список поддерживаемых языков для
     генерации 12 слов</a>
   <p>We use web3js 1.0.0_beta20</p>
