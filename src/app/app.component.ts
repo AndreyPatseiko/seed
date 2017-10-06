@@ -16,7 +16,7 @@ import * as nacl from 'tweetnacl';
   styleUrls: ['./app.component.sass']
 })
 
-export class AppComponent implements OnInit, AfterViewInit { 
+export class AppComponent implements OnInit, AfterViewInit {
   msSupportDownload: boolean = false;
   web3: Web3;
   walletsList = [];
@@ -26,8 +26,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   bip39 = bip39;
   nacl = nacl;
 
+  ballance;
+
   constructor() {
-    this.web3 = new Web3('http://192.168.11.214:5145');
+    // this.web3 = new Web3('http://192.168.11.214:5145');
+    this.web3 = new Web3('http://localhost:8545');
   }
 
   ngAfterViewInit() {
@@ -59,36 +62,36 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const encrypteKey = CryptoJS.HmacSHA256(pass2, 'EthWall').toString(CryptoJS.enc.Hex); // Encrypte password custom password
     const key = Buffer.from(encrypteKey, 'hex');
-    console.log('key', key);
+    // console.log('key', key);
     const keyStr = Buffer.from(encrypteKey, 'hex').toString('base64');
     // console.log('key transform = ', Buffer.from([27, 51, -41, -91, -23, -76, 11, 88, -80, -27, -90, 55, -4, -78, 27, -122, -64, -14, -31, -115, -126, 22, 68, -23, 68, -59, 42, -39, -114, -64, -119, 35]).toString('base64'))
-    console.log('keyStr  = ', keyStr);  //keyStr: = GzPXpem0C1iw5aY3/LIbhsDy4Y2CFkTpRMUq2Y7AiSM=
+    // console.log('keyStr  = ', keyStr);  //keyStr: = GzPXpem0C1iw5aY3/LIbhsDy4Y2CFkTpRMUq2Y7AiSM=
 
     const mnemonicPhrase = 'blush topple dove invest firm black narrow rapid wish science doll interest';
     const mnemonicEntropy = this.bip39.mnemonicToEntropy(mnemonicPhrase);
     // console.log('mnemonicEntropy ', mnemonicEntropy)
     const mnemonicEntropyBytes = new Uint8Array(Buffer.from(mnemonicEntropy, 'hex'));
-    console.log('mnemonicEntropy = ', mnemonicEntropy, '|| mnemonicEntropyBytes = ', mnemonicEntropyBytes);
+    // console.log('mnemonicEntropy = ', mnemonicEntropy, '|| mnemonicEntropyBytes = ', mnemonicEntropyBytes);
 
     const chiper = this.nacl.secretbox(mnemonicEntropyBytes, nonce, key);
     const cipherStr = Buffer.from(chiper).toString('base64');
-    console.log('cipherStr =', cipherStr);
+    // console.log('cipherStr =', cipherStr);
 
-    console.log('================ Decode ========================');
+    // console.log('================ Decode ========================');
     const _nonceStr = nonceStr;
     // const _nonceStr = '8RyMa5LN59rTpO+72QmjIbXZTeMmVNOA';
     const _cipherStr = cipherStr;
     // const _cipherStr = 'yBxlSOlnB8mEDxRkLyTffq3QBfx+oxf/NBr+nxaHTLE=';
-    console.log('_cipherStr =', _cipherStr);
+    // console.log('_cipherStr =', _cipherStr);
     const _chiper = Buffer.from(_cipherStr, 'base64');
-    console.log('_chiper ', _chiper);
+    // console.log('_chiper ', _chiper);
     const _nonce = Buffer.from(_nonceStr, 'base64');
 
     const decryptedMsg3 = this.nacl.secretbox.open(new Uint8Array(_chiper), new Uint8Array(_nonce), new Uint8Array(key))
-    console.log('decryptedMsg3 = ', decryptedMsg3);
+    // console.log('decryptedMsg3 = ', decryptedMsg3);
     const _entropy = Buffer.from(decryptedMsg3).toString('hex');
-    console.log('_message = ', _entropy);
-    console.log('phrase = ', this.bip39.entropyToMnemonic(_entropy))
+    // console.log('_message = ', _entropy);
+    // console.log('phrase = ', this.bip39.entropyToMnemonic(_entropy))
 
     // =====    phrase to entropy and return phrase    ========
     // console.log('bip39 ', this.bip39)
@@ -96,7 +99,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     // const praseFromEntropy = this.bip39.entropyToMnemonic(mnemonicEntropy);
     // console.log('mnemonicEntropy = ', mnemonicEntropy);
     // console.log('praseFromEntropy = ', praseFromEntropy);
+
+    this.walletsList.forEach(el => {
+      this.web3.eth.getBalance(el.address.toString()).then(res => {
+          el['ballance'] = res / 1e18;
+        }
+      )
+
+    })
   }
+
 
   createSimpleWalet(walletName) {
     if (walletName) {

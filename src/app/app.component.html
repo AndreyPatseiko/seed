@@ -21,6 +21,12 @@
 
 <div class="wallets-info">
   <div>
+    <h2>TOKENS</h2>
+    <button (click)=""></button>
+  </div>
+
+
+  <div>
     <h2>import file</h2>
     <div
       class="drop-area"
@@ -47,6 +53,7 @@
     <p>Wallet walletName: {{wallet?.nameWallet}}</p>
     <p>Wallet address: {{wallet?.address}}</p>
     <p>Wallet privateKey: {{wallet?.privateKey}}</p>
+    <p>Wallet ballance: {{wallet?.ballance}}</p>
     <p *ngIf="wallet.words">Wallet 12 word list: {{wallet?.words}}</p>
     <p *ngIf="wallet.password">Wallet 12 word password: {{wallet?.password}}</p>
   </div>
