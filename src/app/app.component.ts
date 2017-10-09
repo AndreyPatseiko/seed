@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Http} from '@angular/http';
 
 declare const Buffer;
 import Web3 from 'web3';
@@ -25,12 +26,26 @@ export class AppComponent implements OnInit, AfterViewInit {
   bip32 = bip32;
   bip39 = bip39;
   nacl = nacl;
-
   ballance;
+  tokens;
+  tokensImageList;
 
-  constructor() {
-    // this.web3 = new Web3('http://192.168.11.214:5145');
-    this.web3 = new Web3('http://localhost:8545');
+  constructor(private http: Http) {
+    this.web3 = new Web3('http://192.168.11.214:5145');
+    // this.web3 = new Web3('http://localhost:8545');
+    // Token
+    this.http.get('https://api.ethplorer.io/getTopTokens?apiKey=freekey').subscribe(
+      res => {
+        this.tokens = res.json().tokens;
+        console.log('tokens = ', this.tokens)
+      }
+    );
+    this.http.get('https://www.cryptocompare.com/api/data/coinlist/').subscribe(
+      res => {
+        this.tokensImageList = res.json();
+        console.log('tokensImageList ', this.tokensImageList)
+      })
+
   }
 
   ngAfterViewInit() {
@@ -49,7 +64,45 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit() {
+  getImageUrl(token) {
+    try {
+      return this.tokensImageList.BaseImageUrl + this.tokensImageList.Data[token.symbol.toUpperCase()].ImageUrl
+    } catch (e) {
+      console.log('not found image')
+    }
+  }
+
+  sendContract() {
+    console.log('send');
+    console.log(this.fooContract)
+  }
+
+  fooContract;
+
+  async ngOnInit() {
+    // (0) 0xd82d2d5229fe0d595bcc8487149eee7f32e13e67
+    // (1) 0x1d0814b8d52d4663729075dd5354d832816951cd
+    //
+    // Private Keys
+    // ==================
+    // (0) d7628d0f1b4fea04cd8a6499b60e52bb1886688daf3610980dce1d0557717924
+    // (1) 095f622dfd89aac772d265e18a844aff74337c5fd5eb2839f16442302ec75c17
+    const abi = [{"constant":true,"inputs":[],"name":"getFoo","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function","stateMutability":"view"},{"constant":false,"inputs":[{"name":"_foo","type":"bytes32"}],"name":"setFoo","outputs":[],"payable":false,"type":"function","stateMutability":"nonpayable"}];
+    this.fooContract = new this.web3.eth.Contract(abi);
+
+    setTimeout(() => {
+      console.log(this.fooContract.deploy())
+    },1000)
+
+    this.web3.eth.getCoinbase().then(console.log);
+
+    // 0xbbf289d846208c16edc8474705c748aff07732db
+    console.log('Contract =', this.fooContract)
+    console.log('set Foo ', this.fooContract.methods.setFoo('test'))
+    console.log('get Foo ', this.fooContract.methods.getFoo())
+    // this.fooContract.options.address = '0x185b825beee9b08f2207684e89d761668a7d5063';
+
+
     if (this.walletsList.length === 0) {
       this.getWallets();
     }
