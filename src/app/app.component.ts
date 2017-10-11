@@ -29,27 +29,280 @@ export class AppComponent implements OnInit, AfterViewInit {
   ballance;
   tokens;
   tokensImageList;
+  abi =
+    [
+      {
+        'constant': true,
+        'inputs': [],
+        'name': 'name',
+        'outputs': [{'name': '', 'type': 'string'}],
+        'payable': false,
+        'type': 'function'
+      }, {
+      'constant': false,
+      'inputs': [{'name': '_spender', 'type': 'address'}, {'name': '_value', 'type': 'uint256'}],
+      'name': 'approve',
+      'outputs': [],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': true,
+      'inputs': [],
+      'name': 'totalSupply',
+      'outputs': [{'name': '', 'type': 'uint256'}],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': false,
+      'inputs': [{'name': '_from', 'type': 'address'}, {'name': '_to', 'type': 'address'}, {
+        'name': '_value',
+        'type': 'uint256'
+      }],
+      'name': 'transferFrom',
+      'outputs': [],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': true,
+      'inputs': [],
+      'name': 'INITIAL_SUPPLY',
+      'outputs': [{'name': '', 'type': 'uint256'}],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': true,
+      'inputs': [],
+      'name': 'decimals',
+      'outputs': [{'name': '', 'type': 'uint256'}],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': true,
+      'inputs': [{'name': '_owner', 'type': 'address'}],
+      'name': 'balanceOf',
+      'outputs': [{'name': 'balance', 'type': 'uint256'}],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': true,
+      'inputs': [],
+      'name': 'symbol',
+      'outputs': [{'name': '', 'type': 'string'}],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': false,
+      'inputs': [{'name': '_to', 'type': 'address'}, {'name': '_value', 'type': 'uint256'}],
+      'name': 'transfer',
+      'outputs': [],
+      'payable': false,
+      'type': 'function'
+    }, {
+      'constant': true,
+      'inputs': [{'name': '_owner', 'type': 'address'}, {'name': '_spender', 'type': 'address'}],
+      'name': 'allowance',
+      'outputs': [{'name': 'remaining', 'type': 'uint256'}],
+      'payable': false,
+      'type': 'function'
+    }, {'inputs': [], 'payable': false, 'type': 'constructor'}, {
+      'anonymous': false,
+      'inputs': [{'indexed': true, 'name': 'owner', 'type': 'address'}, {
+        'indexed': true,
+        'name': 'spender',
+        'type': 'address'
+      }, {'indexed': false, 'name': 'value', 'type': 'uint256'}],
+      'name': 'Approval',
+      'type': 'event'
+    }, {
+      'anonymous': false,
+      'inputs': [{'indexed': true, 'name': 'from', 'type': 'address'}, {
+        'indexed': true,
+        'name': 'to',
+        'type': 'address'
+      }, {'indexed': false, 'name': 'value', 'type': 'uint256'}],
+      'name': 'Transfer',
+      'type': 'event'
+    }]
+
+  // abi =
+  //   [
+  //     {
+  //   "constant": true,
+  //   "inputs": [],
+  //   "name": "name",
+  //   "outputs": [{"name": "", "type": "string"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": false,
+  //   "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}],
+  //   "name": "approve",
+  //   "outputs": [{"name": "success", "type": "bool"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": true,
+  //   "inputs": [],
+  //   "name": "totalSupply",
+  //   "outputs": [{"name": "", "type": "uint256"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": false,
+  //   "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {
+  //     "name": "_value",
+  //     "type": "uint256"
+  //   }],
+  //   "name": "transferFrom",
+  //   "outputs": [{"name": "success", "type": "bool"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": true,
+  //   "inputs": [],
+  //   "name": "decimals",
+  //   "outputs": [{"name": "", "type": "uint8"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": true,
+  //   "inputs": [],
+  //   "name": "version",
+  //   "outputs": [{"name": "", "type": "string"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": true,
+  //   "inputs": [{"name": "_owner", "type": "address"}],
+  //   "name": "balanceOf",
+  //   "outputs": [{"name": "balance", "type": "uint256"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": true,
+  //   "inputs": [],
+  //   "name": "symbol",
+  //   "outputs": [{"name": "", "type": "string"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": false,
+  //   "inputs": [{"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"}],
+  //   "name": "transfer",
+  //   "outputs": [{"name": "success", "type": "bool"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": false,
+  //   "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}, {
+  //     "name": "_extraData",
+  //     "type": "bytes"
+  //   }],
+  //   "name": "approveAndCall",
+  //   "outputs": [{"name": "success", "type": "bool"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "constant": true,
+  //   "inputs": [{"name": "_owner", "type": "address"}, {"name": "_spender", "type": "address"}],
+  //   "name": "allowance",
+  //   "outputs": [{"name": "remaining", "type": "uint256"}],
+  //   "payable": false,
+  //   "type": "function"
+  // }, {
+  //   "inputs": [{"name": "_initialAmount", "type": "uint256"}, {
+  //     "name": "_tokenName",
+  //     "type": "string"
+  //   }, {"name": "_decimalUnits", "type": "uint8"}, {"name": "_tokenSymbol", "type": "string"}],
+  //   "payable": false,
+  //   "type": "constructor"
+  // }, {"payable": false, "type": "fallback"}, {
+  //   "anonymous": false,
+  //   "inputs": [{"indexed": true, "name": "_from", "type": "address"}, {
+  //     "indexed": true,
+  //     "name": "_to",
+  //     "type": "address"
+  //   }, {"indexed": false, "name": "_value", "type": "uint256"}],
+  //   "name": "Transfer",
+  //   "type": "event"
+  // }, {
+  //   "anonymous": false,
+  //   "inputs": [{"indexed": true, "name": "_owner", "type": "address"}, {
+  //     "indexed": true,
+  //     "name": "_spender",
+  //     "type": "address"
+  //   }, {"indexed": false, "name": "_value", "type": "uint256"}],
+  //   "name": "Approval",
+  //   "type": "event"
+  // }]
+  tokenContract;
 
   constructor(private http: Http) {
     this.web3 = new Web3('http://192.168.11.214:5145');
     // this.web3 = new Web3('http://localhost:8545');
-    // Token
-    this.http.get('https://api.ethplorer.io/getTopTokens?apiKey=freekey').subscribe(
-      res => {
-        this.tokens = res.json().tokens;
-        console.log('tokens = ', this.tokens)
-      }
-    );
-    this.http.get('https://www.cryptocompare.com/api/data/coinlist/').subscribe(
-      res => {
-        this.tokensImageList = res.json();
-        console.log('tokensImageList ', this.tokensImageList)
-      })
 
+    // const addressContract = '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0'
+    // this.http.get(`https://api.etherscan.io/api?module=contract&action=getabi&address=${addressContract}&apikey=AWTZAXGI342YVASQMSITZS7QWA2PSD8GFB`).subscribe(
+    //   res => {
+    //     const parsingRes = res.json();
+    //     // console.log(parsingRes.result)
+    //     this.abi = parsingRes.result;
+    //     this.initContract()
+    //   }
+    // )
+    console.log('WEB3 =', this.web3)
+
+
+    // Token
+    // this.http.get('https://api.ethplorer.io/getTopTokens?apiKey=freekey').subscribe(
+    //   res => {
+    //     this.tokens = res.json().tokens;
+    //     console.log('tokens = ', this.tokens)
+    //   }
+    // );
+    // this.http.get('https://www.cryptocompare.com/api/data/coinlist/').subscribe(
+    //   res => {
+    //     this.tokensImageList = res.json();
+    //     console.log('tokensImageList ', this.tokensImageList)
+    //   })
+    this.initContract();
+  }
+
+  transferToken() {
+    console.log('token kontract = ', this.tokenContract.options.address);
+    const sendWalletAddress = '0x4C47Bfe01f28f4697f28cbf9f8DFCe6c68Cad3eB';
+    // this.tokenContract.methods.transfer('0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b', 300).send({from: '0xb7919030054CAB72a3915e1C54C3A5cD584B6e5B'}, res => console.log(res))
+    this.tokenContract.methods.transfer('0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b', 300).send().then(res => console.log(res))
+    // console.log(this.tokenContract.methods.transfer())
+
+  }
+
+  initContract() {
+
+    const contractAddress = '0x8a87e541f12e1aa851aa3d75a1ac5d940ab0dcb0'
+    this.tokenContract = new this.web3.eth.Contract((this.abi), contractAddress, {
+      from: '0xb7919030054CAB72a3915e1C54C3A5cD584B6e5B',
+      gas: 100000
+    });
+    let currency = {
+      name: '',
+      symbol: '',
+      decimals: ''
+    }
+    this.tokenContract.methods.name().call().then(res => currency.name = res);
+    this.tokenContract.methods.symbol().call().then(res => currency.symbol = res);
+    this.tokenContract.methods.decimals().call().then(res => currency.decimals = res)
+    this.tokenContract.methods.balanceOf('0xb7919030054CAB72a3915e1C54C3A5cD584B6e5B').call().then(res => console.log('Currency ',currency.name +  '| balanceOf = ', res / 1e18, currency.symbol))
+
+    const secondEalletToken = new this.web3.eth.Contract((this.abi), contractAddress);
+    secondEalletToken.methods.balanceOf('0x4C47Bfe01f28f4697f28cbf9f8DFCe6c68Cad3eB').call().then(res => console.log('!!! 2 balance = ', res))
+    console.log('token kontract1  = ', this.tokenContract);
   }
 
   ngAfterViewInit() {
     this.msSupportDownload = !!window.navigator.msSaveOrOpenBlob; // From save file in all browsers
+
+
   }
 
   // Save only IE
@@ -80,69 +333,48 @@ export class AppComponent implements OnInit, AfterViewInit {
   fooContract;
 
   async ngOnInit() {
-    // (0) 0xd82d2d5229fe0d595bcc8487149eee7f32e13e67
-    // (1) 0x1d0814b8d52d4663729075dd5354d832816951cd
-    //
-    // Private Keys
-    // ==================
-    // (0) d7628d0f1b4fea04cd8a6499b60e52bb1886688daf3610980dce1d0557717924
-    // (1) 095f622dfd89aac772d265e18a844aff74337c5fd5eb2839f16442302ec75c17
-    const abi = [{"constant":true,"inputs":[],"name":"getFoo","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function","stateMutability":"view"},{"constant":false,"inputs":[{"name":"_foo","type":"bytes32"}],"name":"setFoo","outputs":[],"payable":false,"type":"function","stateMutability":"nonpayable"}];
-    this.fooContract = new this.web3.eth.Contract(abi);
-
-    setTimeout(() => {
-      console.log(this.fooContract.deploy())
-    },1000)
-
-    this.web3.eth.getCoinbase().then(console.log);
-
-    // 0xbbf289d846208c16edc8474705c748aff07732db
-    console.log('Contract =', this.fooContract)
-    console.log('set Foo ', this.fooContract.methods.setFoo('test'))
-    console.log('get Foo ', this.fooContract.methods.getFoo())
-    // this.fooContract.options.address = '0x185b825beee9b08f2207684e89d761668a7d5063';
 
 
     if (this.walletsList.length === 0) {
       this.getWallets();
     }
     // Encrypte entropy into file
-    const pass2 = '123Qwe';
-    const random24 = this.nacl.randomBytes(24);
-    const nonce = new Uint8Array(random24);
-    const nonceStr = Buffer.from(nonce).toString('base64');
-    console.log('nonceStr =', nonceStr);
+    // const pass2 = '123Qwe';
+    // const random24 = this.nacl.randomBytes(24);
+    // const nonce = new Uint8Array(random24);
+    // const nonceStr = Buffer.from(nonce).toString('base64');
+    // console.log('nonceStr =', nonceStr);
 
-    const encrypteKey = CryptoJS.HmacSHA256(pass2, 'EthWall').toString(CryptoJS.enc.Hex); // Encrypte password custom password
-    const key = Buffer.from(encrypteKey, 'hex');
+    // const encrypteKey = CryptoJS.HmacSHA256(pass2, 'EthWall').toString(CryptoJS.enc.Hex); // Encrypte password custom password
+    // const key = Buffer.from(encrypteKey, 'hex');
     // console.log('key', key);
-    const keyStr = Buffer.from(encrypteKey, 'hex').toString('base64');
+    // const keyStr = Buffer.from(encrypteKey, 'hex').toString('base64');
     // console.log('key transform = ', Buffer.from([27, 51, -41, -91, -23, -76, 11, 88, -80, -27, -90, 55, -4, -78, 27, -122, -64, -14, -31, -115, -126, 22, 68, -23, 68, -59, 42, -39, -114, -64, -119, 35]).toString('base64'))
     // console.log('keyStr  = ', keyStr);  //keyStr: = GzPXpem0C1iw5aY3/LIbhsDy4Y2CFkTpRMUq2Y7AiSM=
 
-    const mnemonicPhrase = 'blush topple dove invest firm black narrow rapid wish science doll interest';
-    const mnemonicEntropy = this.bip39.mnemonicToEntropy(mnemonicPhrase);
+    // const mnemonicPhrase = 'blush topple dove invest firm black narrow rapid wish science doll interest';
+    // const mnemonicEntropy = this.bip39.mnemonicToEntropy(mnemonicPhrase);
     // console.log('mnemonicEntropy ', mnemonicEntropy)
-    const mnemonicEntropyBytes = new Uint8Array(Buffer.from(mnemonicEntropy, 'hex'));
+    // const mnemonicEntropyBytes = new Uint8Array(Buffer.from(mnemonicEntropy, 'hex'));
     // console.log('mnemonicEntropy = ', mnemonicEntropy, '|| mnemonicEntropyBytes = ', mnemonicEntropyBytes);
 
-    const chiper = this.nacl.secretbox(mnemonicEntropyBytes, nonce, key);
-    const cipherStr = Buffer.from(chiper).toString('base64');
+    // const chiper = this.nacl.secretbox(mnemonicEntropyBytes, nonce, key);
+    // const cipherStr = Buffer.from(chiper).toString('base64');
     // console.log('cipherStr =', cipherStr);
 
     // console.log('================ Decode ========================');
-    const _nonceStr = nonceStr;
+    // const _nonceStr = nonceStr;
     // const _nonceStr = '8RyMa5LN59rTpO+72QmjIbXZTeMmVNOA';
-    const _cipherStr = cipherStr;
+    // const _cipherStr = cipherStr;
     // const _cipherStr = 'yBxlSOlnB8mEDxRkLyTffq3QBfx+oxf/NBr+nxaHTLE=';
     // console.log('_cipherStr =', _cipherStr);
-    const _chiper = Buffer.from(_cipherStr, 'base64');
+    // const _chiper = Buffer.from(_cipherStr, 'base64');
     // console.log('_chiper ', _chiper);
-    const _nonce = Buffer.from(_nonceStr, 'base64');
+    // const _nonce = Buffer.from(_nonceStr, 'base64');
 
-    const decryptedMsg3 = this.nacl.secretbox.open(new Uint8Array(_chiper), new Uint8Array(_nonce), new Uint8Array(key))
+    // const decryptedMsg3 = this.nacl.secretbox.open(new Uint8Array(_chiper), new Uint8Array(_nonce), new Uint8Array(key))
     // console.log('decryptedMsg3 = ', decryptedMsg3);
-    const _entropy = Buffer.from(decryptedMsg3).toString('hex');
+    // const _entropy = Buffer.from(decryptedMsg3).toString('hex');
     // console.log('_message = ', _entropy);
     // console.log('phrase = ', this.bip39.entropyToMnemonic(_entropy))
 
