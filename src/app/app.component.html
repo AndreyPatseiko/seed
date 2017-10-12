@@ -1,7 +1,6 @@
 <div style="text-align:center">
   <h1>Random normal wallets and brain wallets creation!</h1>
 </div>
-<button (click)="transferToken()">transferToken</button>
 <div class="input-data">
   <div class="wallet-name">
     <input type="text" #name required>
@@ -20,7 +19,10 @@
 </div>
 
 <div class="wallets-info">
-  <button (click)="sendContract()">Send Contract</button>
+  <!--<button (click)="sendContract()">Send Contract</button>-->
+  <button (click)="createSmartContract()">Create SmartContract</button>
+  <button (click)="getBallance()">Get balance</button>
+  <button (click)="transfer()">Transfer</button>
   <div *ngIf="tokensImageList?.Data">
     <h2>TOKENS</h2>
     <p>Top tokens list</p>
