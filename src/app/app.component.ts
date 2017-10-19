@@ -246,6 +246,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   transfer() {
+    debugger
     const address = this.web3.eth.accounts.wallet.add('0xc293f871deab7fc6bc6c21f5ddd76fa529b10a7ca0b1823b95d3a30ecbdd7657')
     console.log('address =', address)
     // 1- 0x8871D1244123EcCddE360d6B78a6a34B86D9dD24
@@ -261,6 +262,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   transferToken() {
+    debugger;
     console.log('token kontract = ', this.tokenContract.options.address);
     const sendWalletAddress = '0x4C47Bfe01f28f4697f28cbf9f8DFCe6c68Cad3eB';
     // this.tokenContract.methods.transfer('0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b', 300).send({from: '0xb7919030054CAB72a3915e1C54C3A5cD584B6e5B'}, res => console.log(res))
@@ -333,6 +335,29 @@ export class AppComponent implements OnInit, AfterViewInit {
   fooContract;
 
   async ngOnInit() {
+    const testArr = [
+      {
+        address: '123'
+      },
+      {
+        address: '1'
+      },
+      {
+        address: '123'
+      },
+      {
+        address: '12'
+      },
+      {
+        address: '123'
+      },
+      {
+        address: '123'
+      }
+    ]
+    // unic array
+    console.log(testArr.filter((thing, index, self) => self.findIndex((t) => {return t.address === thing.address}) === index))
+
 
     if (this.walletsList.length === 0) {
       this.getWallets();
