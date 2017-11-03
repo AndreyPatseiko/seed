@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
+import {TranslateService} from 'ng2-translate';
 
 declare const Buffer;
 import Web3 from 'web3';
@@ -173,8 +174,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
   tokenContract;
+  param = {value: 'world'};
+  public langList = [];
 
-  constructor(private http: Http) {
+  constructor(private http: Http, public translate: TranslateService) {
+    this.translate.addLangs(['ru', 'en']);
+    this.langList = this.translate.getLangs();
+
+    const currentLang = this.translate.getBrowserLang();
+    translate.setDefaultLang(currentLang);
+
     this.web3 = new Web3('http://192.168.11.214:5145');
     console.log('WEB3 =', this.web3)
 
@@ -192,6 +201,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     //     console.log('tokensImageList ', this.tokensImageList)
     //   })
     // this.initContract();
+  }
+
+  changeLanguage(value) {
+    this.translate.use(value);
   }
 
   createSmartContract() {
@@ -243,6 +256,23 @@ export class AppComponent implements OnInit, AfterViewInit {
     tokenContract.methods.decimals().call().then(res => currency.decimals = res)
     tokenContract.methods.balanceOf('0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b').call().then(res => console.log('Currency ', currency.name + '| balanceOf (0) = ', res, currency.symbol))
     tokenContract.methods.balanceOf('0x4C47Bfe01f28f4697f28cbf9f8DFCe6c68Cad3eB').call().then(res => console.log('Currency ', currency.name + '| balanceOf (1) = ', res, currency.symbol))
+  }
+
+  sendPostrequest() {
+    let myheaders = new Headers({
+      'Content-Type': 'application/json;charset=utf-8',
+      "Access-Control-Allow-Origin": "*"
+    });
+
+    this.http.post('http://ethwal.inside.cactussoft.biz:8228/auth/login', {
+      login: 'Andrey',
+      password: 'qweqweQ1'
+    }, {headers: myheaders})
+      .subscribe(
+        res => console.log('res =', res),
+        err => console.log('err =', err)
+      )
+
   }
 
   transfer() {
@@ -356,7 +386,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     ]
     // unic array
-    console.log(testArr.filter((thing, index, self) => self.findIndex((t) => {return t.address === thing.address}) === index))
+    console.log(testArr.filter((thing, index, self) => self.findIndex((t) => {
+      return t.address === thing.address
+    }) === index))
 
 
     if (this.walletsList.length === 0) {

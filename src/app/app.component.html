@@ -16,6 +16,15 @@
     <button type="button" (click)="getWallets()">refresh wallets</button>
     <button type="button" (click)="getBalance(balnceAddress.value)">Get balance</button>
   </div>
+  <div class="btns">
+
+    <select #selectElem (change)="changeLanguage(selectElem.value)">
+      <option *ngFor="let lng of langList" [value]="lng">
+        {{lng}}
+      </option>
+    </select>
+    <div>!! {{ 'Main.Hello' | translate:param }}</div>
+  </div>
 </div>
 
 <div class="wallets-info">
@@ -25,7 +34,7 @@
   </div>
 
 
-
+  <button (click)="sendPostrequest()">Send post request</button>
   <button (click)="createSmartContract()">Create SmartContract</button>
   <button (click)="getBallance()">Get balance</button>
   <button (click)="transfer()">Transfer</button>
@@ -34,7 +43,7 @@
     <p>Top tokens list</p>
     <div *ngFor="let token of tokens">
       <p>Name - {{token?.name}} ; Address - {{token?.address}}; Symbol {{token?.symbol}}</p>
-      <img *ngIf="getImageUrl(token)" [src]="getImageUrl(token)"  class="token-icon" />
+      <img *ngIf="getImageUrl(token)" [src]="getImageUrl(token)" class="token-icon"/>
     </div>
   </div>
 
