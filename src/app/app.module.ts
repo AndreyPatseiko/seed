@@ -2,20 +2,22 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {Http, HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
-import {TranslateLoader, TranslateModule, TranslateStaticLoader} from "ng2-translate";
+import {CustomMaterialModule} from './modules/material';
+import { SimpleInputComponent } from './components/simple-input/simple-input.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+// import {TranslateLoader, TranslateModule, TranslateStaticLoader} from "ng2-translate";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SimpleInputComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpModule,
-    TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
-      deps: [Http]
-    })
+    CustomMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
