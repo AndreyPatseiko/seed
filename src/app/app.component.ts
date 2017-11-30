@@ -175,8 +175,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(private http: Http) {
     // this.web3 = new Web3('http://192.168.11.214:5145');
-    this.web3 = new Web3('http://localhost:8545');
-
+    // this.web3 = new Web3('http://localhost:8545');
+    // console.log(new WebSocket('ws://127.0.0.1:8545'))
+    this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
 
     // const addressContract = '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0'
     // this.http.get(`https://api.etherscan.io/api?module=contract&action=getabi&address=${addressContract}&apikey=AWTZAXGI342YVASQMSITZS7QWA2PSD8GFB`).subscribe(
@@ -204,9 +205,21 @@ export class AppComponent implements OnInit, AfterViewInit {
     // this.initContract();
   }
 
+  createNewWallet() {
+    console.log(this.web3.eth.accounts.privateKeyToAccount('0x177fd46d0d3f5aaa3d6ff6737fa7a7aae86a8a86cb3c7d17bd45d547a5eb535e'))
+  }
+
+  getAccounts() {
+    this.web3.eth.getAccounts().then(console.log)
+  }
+
+  getWalletBallance() {
+    this.web3.eth.getBalance('0x64A384963B0B2184AE99fd0F37c2Bf5CB079F76B').then(console.log)
+  }
+
   addGreeting() {
-    const walletAddress = '0xb2028897a6dc350aa91fdde87ba7876492abad99';
-    const privateKey = 'e7a1f2b3b3554f271bfe654c10572b7cca78b71c394be55aa59c5c47ee50f64a';
+    const walletAddress = '0x149500B47fB0cfb6C9Fa7162145C92a2D52Cf110';
+    const privateKey = '0x177fd46d0d3f5aaa3d6ff6737fa7a7aae86a8a86cb3c7d17bd45d547a5eb535e';
     // unlock account
     this.web3.eth.accounts.wallet.add(privateKey)
 
