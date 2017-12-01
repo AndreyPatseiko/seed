@@ -434,7 +434,7 @@ new SourceMapDevToolPlugin({
   })
 ],
 "node": {
-  "fs": "empty",
+    "fs": "empty",
     "global": true,
     "crypto": true,
     "tls": "empty",

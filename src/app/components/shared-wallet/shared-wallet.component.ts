@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import Web3 from 'web3';
+import fs from 'node-fs';
+import solc from 'solc'
 
-import {greeting} from '../../contracts/abi'
+import {sharedWallet} from '../../../assets/contracts/abi'
 
 @Component({
   selector: 'app-shared-wallet',
@@ -25,26 +27,83 @@ export class SharedWalletComponent implements OnInit {
     }
   }
   private smartContract;
-  public smartContractAddress: string;
+  public smartContractAddress: string = '0x23a9D87F044b95b8406C7C8116eBdb2A0C27f25E'
   public currentSmartContract;
 
   constructor() {
     this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
-    this.smartContract = new this.web3.eth.Contract(greeting.abi, this.wallets.first.address, {
+    this.smartContract = new this.web3.eth.Contract(sharedWallet.abi, this.wallets.first.address, {
       from: this.wallets.first.address,
-      data: greeting.byteCode,
+      data: '0x' + sharedWallet.byteCode,
       gas: 5700000
     });
-
-    this.smartContract.deploy({
-      data: greeting.byteCode,
-      arguments: ['Placeholder Greeting']
-    })
+    console.log(this.smartContract)
   }
 
   ngOnInit(): void {
     this.getWalletBalance();
     this.addListenersForContract();
+    // console.log(fs)
+    // const input = fs.readFile('./assets/contracts/greeting.sol', 'utf8');
+    // console.log(input)
+  }
+
+  onDeployNewSmartContract(): void {
+    console.log('send new contract')
+    // unlock account
+    this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey);
+
+    this.smartContract.deploy({
+      data: '0x' + sharedWallet.byteCode,
+      arguments: [[this.wallets.first.address], 1, 3]
+    }).send({
+      from: this.wallets.first.address,
+      gas: 5700000,
+      gasPrice: '300000000'
+    })
+      .then(function (newContractInstance) {
+        this.smartContractAddress = newContractInstance.options.address;
+        this.pushTerminalMessage('Contract address : ' + this.smartContractAddress);
+        this.addListenersForContract();
+      })
+      .catch(e => console.log(e.message))
+  }
+
+  addListenersForContract(): void {
+    this.currentSmartContract = new this.web3.eth.Contract(sharedWallet.abi, this.smartContractAddress);
+
+    this.currentSmartContract.events.OwnerAdded()
+      .on('data', function (event) {
+        console.log('OwnerAdded data ', event);
+      })
+      .on('changed', function (event) {
+        console.log('OwnerAdded changed ', event)
+      })
+      .on('error', console.error);
+  }
+
+  getContractData(): void {
+    this.currentSmartContract.methods.m_numOwners().call()
+      .then(res => this.pushTerminalMessage('All owners:' + res))
+      .catch(err => console.log(err.message));
+  }
+
+  changeContractMessage(target: string): void {
+    console.log('Target ', target)
+    // unlock account
+    this.web3.eth.accounts.wallet.add(this.wallets[target].privateKey);
+
+    // const message = 'HI user number ' + (Math.random() * 100).toFixed(0) + `. From target: ${target}`;
+
+    this.currentSmartContract.methods.addOwner('0x8660B9CC3503D997d67FC773794859691AF0E4Fa').send({
+      from: this.wallets[target].address,
+      gas: 5700000,
+      gasPrice: '300000000'
+    })
+  }
+
+  pushTerminalMessage(message: string) {
+    this.terminal.push(message)
   }
 
   getWalletBalance(): void {
@@ -53,63 +112,5 @@ export class SharedWalletComponent implements OnInit {
         .then(balance => this.wallets[key].balance = balance / 1e18)
     }
   }
-
-  getContractData(): void {
-    this.currentSmartContract.methods.greet().call()
-      .then(res => this.pushTerminalMessage(`Greet: ${res}`))
-      .catch(err => console.log(err.message));
-  }
-
-  onDeployNewSmartContract(): void {
-    console.log('send new contract')
-    // unlock account
-    this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey);
-
-    this.smartContract.send({
-      from: this.wallets.first.address,
-      gas: 5700000,
-      gasPrice: '300000000'
-    })
-      .then(function (newContractInstance) {
-        this.smartContractAddress = newContractInstance.options.addres;
-        this.pushTerminalMessage('Contract address : ' + this.smartContractAddress);
-        this.addListenersForContract();
-      })
-      .catch(e => console.log(e.message))
-
-
-  }
-
-  addListenersForContract(): void {
-    this.currentSmartContract = new this.web3.eth.Contract(greeting.abi, '0x108b5626bb87d54FF5C27AbC8A1c82A5693FE5f8');
-
-    this.currentSmartContract.events.Sent()
-      .on('data', function (event) {
-        console.log('data ', event);
-      })
-      .on('changed', function (event) {
-        console.log('changed ', event)
-      })
-      .on('error', console.error);
-  }
-
-  pushTerminalMessage(message: string) {
-    this.terminal.push(message)
-  }
-
-  changeContractMessage(target: string): void {
-    console.log('Target ', target)
-    // unlock account
-    this.web3.eth.accounts.wallet.add(this.wallets[target].privateKey);
-
-    const message = 'HI user number ' + (Math.random() * 100).toFixed(0) + `. From target: ${target}`;
-
-    this.currentSmartContract.methods.setGreeting(message).send({
-      from: this.wallets[target].address,
-      gas: 5700000,
-      gasPrice: '300000000'
-    })
-  }
-
 
 }
