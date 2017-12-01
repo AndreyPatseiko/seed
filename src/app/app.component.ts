@@ -135,46 +135,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         console.log('changed ', event)
       })
       .on('error', console.error);
-    // let z;
-    // contract.events.allEvents((error, event) => {
-    //   if (error) {
-    //     console.error(error)
-    //     return false
-    //   }
-    //   console.log(event)
-    // })
-    // console.log('all events ', callback)
-    // const event = contract.events.Sent({}, function (error, event) {
-    //   z = error || event
-    // })
-    //   .on('data', function (event) {
-    //     console.log(event); // same results as the optional callback above
-    //   })
-    //   .on('changed', function (event) {
-    //     console.log('change', event)
-    //   })
-    //   .on('error', console.error);
-    // console.log(event)
-    // event.get(function(error, event){
-    //   if (error) {
-    //     console.log("Error: " + error);
-    //   } else {
-    //     console.log(event.event + ": " + JSON.stringify(event.args));
-    //   }
-    // });
-    // event.on(res => console.log(res))
-
-    // change user name and update smart contract
-    // setTimeout(() => {
-    //   console.log('update contract');
-    //   contract.methods.setGreeting(message).send({from: walletAddress})
-    // }, 2000)
-    //
-    // setTimeout(() => {
-    //   console.log('Z = ', z)
-    //   console.log('after 3000s ', contract)
-    // }, 3000)
-
   }
 
   getGreeting() {

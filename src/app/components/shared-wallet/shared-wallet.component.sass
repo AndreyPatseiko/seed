@@ -1,0 +1,45 @@
+.container
+  width: 80%
+  min-width: 500px
+  margin: 0 auto
+
+h1, h2
+  text-align: center
+  width: 100%
+
+.common-buttons
+  display: flex
+  justify-content: center
+
+.wallet-wrapper
+  display: flex
+
+.wallet-info
+  display: flex
+  justify-content: space-between
+  flex-wrap: wrap
+  width: 50%
+  span
+    display: inline-block
+    width: 100%
+  h2
+    text-align: left
+  &.second
+    text-align: right
+    h2
+      text-align: right
+    .controls
+      justify-content: flex-end
+  .controls
+    display: flex
+    width: 100%
+
+.terminal
+  width: 100%
+  height: 300px
+  border: 1px solid black
+  padding: 0 .5em
+  overflow: auto
+
+button
+  margin: 0 1em
