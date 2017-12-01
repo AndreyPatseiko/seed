@@ -5,9 +5,11 @@ import {AppComponent} from './app.component';
 import {CustomMaterialModule} from './modules/material';
 import {SimpleInputComponent} from './components/simple-input/simple-input.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {SaveImageComponent} from './components/save-image/save-image.component';
+import {UIPageComponent} from './components/ui-elements/ui-elements.component';
 import {appRoutsModule} from './components/app.routs';
 import {SharedWalletComponent} from './components/shared-wallet/shared-wallet.component';
+import {WalletsComponent} from './components/wallets/wallets.component';
+import {TokensComponent} from './components/tokens/tokens.component';
 
 // import {TranslateLoader, TranslateModule, TranslateStaticLoader} from "ng2-translate";
 
@@ -15,8 +17,10 @@ import {SharedWalletComponent} from './components/shared-wallet/shared-wallet.co
   declarations: [
     AppComponent,
     SimpleInputComponent,
-    SaveImageComponent,
-    SharedWalletComponent
+    UIPageComponent,
+    SharedWalletComponent,
+    WalletsComponent,
+    TokensComponent
   ],
   imports: [
     BrowserModule,

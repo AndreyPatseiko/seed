@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SaveImageComponent } from './save-image.component';
+import { TokensComponent } from './tokens.component';
 
-describe('SaveImageComponent', () => {
-  let component: SaveImageComponent;
-  let fixture: ComponentFixture<SaveImageComponent>;
+describe('TokensComponent', () => {
+  let component: TokensComponent;
+  let fixture: ComponentFixture<TokensComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SaveImageComponent ]
+      declarations: [ TokensComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SaveImageComponent);
+    fixture = TestBed.createComponent(TokensComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
