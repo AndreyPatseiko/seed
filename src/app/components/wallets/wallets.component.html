@@ -20,17 +20,6 @@
   </div>
 
   <div class="wallets-info">
-    <h1>Sahred wallet</h1>
-    <button (click)="createSmartContract()">Create Token SmartContract</button>
-    <button (click)="changeContract()">Change contract</button>
-    <button (click)="getContract()">Get Contract</button>
-  </div>
-  <div class="wallets-info">
-    <button (click)="getContract()">Send transaction</button>
-    <button (click)="getContract()">Sign transaction</button>
-  </div>
-
-  <div class="wallets-info">
     <button (click)="getBallance()">Get balance</button>
     <button (click)="transfer()">Transfer</button>
     <div *ngIf="tokensImageList?.Data">

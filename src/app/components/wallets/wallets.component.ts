@@ -71,9 +71,6 @@ export class WalletsComponent implements OnInit, AfterViewInit {
     this.web3.eth.getBalance('0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b').then(res => console.log('ws', res / 1e18))
   }
 
-
-
-
   // getBallance() {
   //   // (0) 0xa5c2602e05c33ed6963d9b8130e95ecf7435fafd
   //   // (1) 0x3fb8fe79cd1297819832a72aa24ede816cb69763
@@ -136,18 +133,6 @@ export class WalletsComponent implements OnInit, AfterViewInit {
     this.msSupportDownload = !!window.navigator.msSaveOrOpenBlob; // From save file in all browsers
   }
 
-  // Save only IE
-  saveFile(img, canvasForImg) {
-    try {
-      const canvas = canvasForImg;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      window.navigator.msSaveBlob(canvas.msToBlob(), 'qr-code.png');
-    } catch (e) {
-      throw e;
-    }
-  }
-
   getImageUrl(token) {
     try {
       return this.tokensImageList.BaseImageUrl + this.tokensImageList.Data[token.symbol.toUpperCase()].ImageUrl
@@ -155,13 +140,6 @@ export class WalletsComponent implements OnInit, AfterViewInit {
       console.log('not found image')
     }
   }
-
-  sendContract() {
-    console.log('send');
-    console.log(this.fooContract)
-  }
-
-  fooContract;
 
   async ngOnInit() {
 

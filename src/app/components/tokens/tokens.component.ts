@@ -10,18 +10,18 @@ import {tokens} from '../../../assets/contracts/abi';
 
 export class TokensComponent {
   public web3: Web3;
-  public name = '';
-  public symbol = '';
+  public name = 'Test token N10';
+  public symbol = 'TR10';
   public decimal = 0;
-  public count = '0';
-  public owner = '';
-  public privateKey = '';
+  public count = '1000';
+  public owner = '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b';
+  public privateKey = '0xc293f871deab7fc6bc6c21f5ddd76fa529b10a7ca0b1823b95d3a30ecbdd7657';
   public tokenAddress = '';
   public isSend = false;
   public transfer = {
-    tokenAddress: '',
-    count: '',
-    whom: ''
+    tokenAddress: '0x1bC48358E30372CFa919000eE4040EBe92A01d1a',
+    count: '10',
+    whom: '0x4fd55f6A8A3b4BbBcBd8e3C129F88A12f4E67C1a'
   };
 
   constructor() {
@@ -29,42 +29,49 @@ export class TokensComponent {
   }
 
   createNewToken() {
-    this.name = 'Test token N9';
-    this.symbol = 'TR9';
-    this.count = '1000';
-    this.privateKey = '0xc293f871deab7fc6bc6c21f5ddd76fa529b10a7ca0b1823b95d3a30ecbdd7657';
-    this.owner = '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b';
     if (this.name &&
       this.symbol &&
       this.count &&
       this.privateKey &&
       this.owner) {
       // unlock account
-      // this.web3.eth.accounts.wallet.add(this.privateKey);
+      this.web3.eth.accounts.wallet.add(this.privateKey);
 
-      const contract = new this.web3.eth.Contract(tokens.abi, '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b',
+      const contract = new this.web3.eth.Contract(tokens.abi, this.owner,
         {
-          from: '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b',
+          from: this.owner,
+          data: '0x' + tokens.byteCode,
           gas: 4700000
         });
-      console.log(contract)
+
       this.isSend = true;
 
       contract.deploy({
-        arguments: [1000, 'Token test N9', 0, 'TT9']
+        arguments: [this.count, this.name, this.decimal, this.symbol]
       }).send({
-        from: '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b',
+        from: this.owner,
         gas: 4700000,
-        gasPrice: '300000000'
+        gasPrice: '30000000'
       })
-        .then(newContractInstance => {
-          // this.tokenAddress = newContractInstance.contractAddress;
-          console.log(newContractInstance);
-        })
+        .then(newContractInstance => console.log(newContractInstance))
         .catch(e => console.log(e));
     } else {
       alert('All fields is required');
     }
+  }
+
+  transferTokens() {
+    // unlock account
+    this.web3.eth.accounts.wallet.add(this.privateKey);
+    console.log(this.transfer)
+    const contract = new this.web3.eth.Contract(tokens.abi, this.transfer.tokenAddress,
+      {
+        from: this.owner,
+        gas: 4700000
+      }
+    );
+    console.log('contract ', contract)
+    contract.methods.transfer(this.transfer.whom, this.transfer.count).send().then(res => console.log(res))
   }
 
 }
