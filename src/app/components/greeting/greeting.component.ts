@@ -1,18 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import Web3 from 'web3';
-
-import {sharedWallet} from '../../../assets/contracts/abi'
+import {greeting} from '../../../assets/contracts/abi';
 
 @Component({
-  selector: 'app-shared-wallet',
-  templateUrl: './shared-wallet.component.html',
-  styleUrls: ['./shared-wallet.component.sass']
+  selector: 'app-greeting',
+  templateUrl: './greeting.component.html',
+  styleUrls: ['../shared-wallet/shared-wallet.component.sass']
 })
-
-export class SharedWalletComponent implements OnInit {
+export class GreetingComponent implements OnInit {
   public web3: Web3;
   public terminal = [];
-  public newOwner: string;
   public wallets = {
     first: {
       address: '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b',
@@ -24,16 +21,17 @@ export class SharedWalletComponent implements OnInit {
       privateKey: '0x3981e18719b1401b167d48528674ad8847e8b989912152008bda3a52c993638a',
       balance: 0
     }
-  }
+  };
   private smartContract;
-  public smartContractAddress = '0x23a9D87F044b95b8406C7C8116eBdb2A0C27f25E';
+  public smartContractAddress = '0xA3CF323A6b8858c34d8b81760D3cD20bE71a5504';
   public currentSmartContract;
+
 
   constructor() {
     this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
-    this.smartContract = new this.web3.eth.Contract(sharedWallet.abi, this.wallets.first.address, {
+    this.smartContract = new this.web3.eth.Contract(greeting.abi, this.wallets.first.address, {
       from: this.wallets.first.address,
-      data: '0x' + sharedWallet.byteCode,
+      data: '0x' + greeting.byteCode,
       gas: 5700000
     });
     console.log(this.smartContract);
@@ -48,10 +46,9 @@ export class SharedWalletComponent implements OnInit {
     this.pushTerminalMessage('send new contract into test net');
     // unlock account
     this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey);
-
     this.smartContract.deploy({
-      data: '0x' + sharedWallet.byteCode,
-      arguments: [[this.wallets.first.address], 1, 3]
+      data: '0x' + greeting.byteCode,
+      arguments: ['Placeholder']
     }).send({
       from: this.wallets.first.address,
       gas: 5700000,
@@ -64,26 +61,29 @@ export class SharedWalletComponent implements OnInit {
   addListenersForContract(smartContractAddress?: string): void {
     this.smartContractAddress = smartContractAddress ? smartContractAddress : this.smartContractAddress;
     this.pushTerminalMessage('add listen to contract address ' + this.smartContractAddress);
-    this.currentSmartContract = new this.web3.eth.Contract(sharedWallet.abi, this.smartContractAddress);
 
-    this.currentSmartContract.events.OwnerAdded()
-      .on('data', event => this.pushTerminalMessage('OwnerAdded data ' + event))
-      .on('changed', event => this.pushTerminalMessage('OwnerAdded change ' + event))
+    this.currentSmartContract = new this.web3.eth.Contract(greeting.abi, this.smartContractAddress);
+
+    this.currentSmartContract.events.Sent()
+      .on('data', event => this.pushTerminalMessage('Sent event data ' + event))
+      .on('changed', event => this.pushTerminalMessage('Sent event data change ' + event))
       .on('error', console.error);
+
   }
 
   getContractData(): void {
-    this.currentSmartContract.methods.m_numOwners().call()
-      .then(res => this.pushTerminalMessage('All owners:' + res))
+    this.currentSmartContract.methods.greet().call()
+      .then(res => this.pushTerminalMessage('Greeting: ' + res))
       .catch(err => console.log(err.message));
   }
 
-  addNewOwner(target: string): void {
-    this.pushTerminalMessage('New owner address ' + this.newOwner + '; Pay for this transaction ' + this.wallets[target].address);
+  changeGreetingMessage(target: string): void {
+    const message = 'Hi user number ' + (Math.random() * 100).toFixed(0);
+    this.pushTerminalMessage('New greeting ' + message + '; Pay for this transaction ' + this.wallets[target].address);
     // unlock account
     this.web3.eth.accounts.wallet.add(this.wallets[target].privateKey);
 
-    this.currentSmartContract.methods.addOwner(this.newOwner).send({
+    this.currentSmartContract.methods.setGreeting(message).send({
       from: this.wallets[target].address,
       gas: 5700000,
       gasPrice: '300000000'
@@ -97,8 +97,9 @@ export class SharedWalletComponent implements OnInit {
   getWalletBalance(): void {
     for (const key in this.wallets) {
       this.web3.eth.getBalance(this.wallets[key].address)
-        .then(balance => this.wallets[key].balance = balance / 1e18)
+        .then(balance => this.wallets[key].balance = balance / 1e18);
     }
   }
+
 
 }

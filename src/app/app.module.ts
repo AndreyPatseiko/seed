@@ -10,6 +10,7 @@ import {appRoutsModule} from './components/app.routs';
 import {SharedWalletComponent} from './components/shared-wallet/shared-wallet.component';
 import {WalletsComponent} from './components/wallets/wallets.component';
 import {TokensComponent} from './components/tokens/tokens.component';
+import {GreetingComponent} from './components/greeting/greeting.component';
 
 // import {TranslateLoader, TranslateModule, TranslateStaticLoader} from "ng2-translate";
 
@@ -20,7 +21,8 @@ import {TokensComponent} from './components/tokens/tokens.component';
     UIPageComponent,
     SharedWalletComponent,
     WalletsComponent,
-    TokensComponent
+    TokensComponent,
+    GreetingComponent
   ],
   imports: [
     BrowserModule,

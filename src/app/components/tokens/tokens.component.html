@@ -1,3 +1,33 @@
-<p>
-  tokens works!
-</p>
+<div class="container">
+  <h3>Create tokens</h3>
+  <div class="block">
+    <p>Token name: <input type="text" [(ngModel)]="name" required></p>
+    <p>Token symbol: <input type="text" [(ngModel)]="symbol" required></p>
+    <p>Token decimal: <input type="number" [(ngModel)]="decimal" required></p>
+    <p>Sum new token count: <input type="number" [(ngModel)]="count" required></p>
+    <p>Wallet owner: <input type="text" [(ngModel)]="owner" required></p>
+    <p>Wallet private key (need for unlock account): <input type="text" [(ngModel)]="privateKey" required></p>
+    <p>
+      <button (click)="createNewToken()">create new token</button>
+    </p>
+  </div>
+  <p *ngIf="!tokenAddress && isSend">Contract send into rinkeby net</p>
+  <div *ngIf="tokenAddress">
+    <p>You can check you owner wallet from this
+      <a [href]='"https://rinkeby.etherscan.io/address/" + owner'>Wallet owner</a>
+    </p>
+    <p>You can check you token from this
+      <a [href]='"https://rinkeby.etherscan.io/address/" + tokenAddress'>Token</a>
+    </p>
+  </div>
+
+  <h3>Transfer token</h3>
+  <div class="block">
+    <p>Token contract: <input type="text" [(ngModel)]="transfer.tokenAddress" required></p>
+    <p>Send token value: <input type="number" [(ngModel)]="transfer.count" required></p>
+    <p>Whom send: <input type="text" [(ngModel)]="transfer.whom" required></p>
+    <p>
+      <button (click)="transferToken()">Transfer token</button>
+    </p>
+  </div>
+</div>

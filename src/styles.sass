@@ -12,8 +12,12 @@ a
   text-transform: uppercase
   font-weight: bold
   display: inline-block
+  transition: color .4s linear
   &.active
     color: darkcyan
+  &:hover
+    color: gray
+
 
 .top-links
   padding: 1em 0
@@ -26,3 +30,6 @@ a
   height: 200px
   &.over
     border: 1px dotted red
+
+.float-r
+  float: right

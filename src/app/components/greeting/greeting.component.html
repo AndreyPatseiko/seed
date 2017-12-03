@@ -1,10 +1,9 @@
 <div class="shared-wallets container">
-  <h1>Shared wallets</h1>
+  <h1>Greeting simple smart contract.</h1>
   <h3>Instruction</h3>
   <p>1) Install Geth server </p>
   <p>2) Open terminal and run comand
-    <strong>geth --rpcapi "db,eth,net,web3,personal" --ws --wsaddr "localhost" --wsport "8545" --wsorigins "*"
-      --identity "MyTestNode" --datadir "./data" --rinkeby --fast</strong>
+    <strong>geth --ws --wsaddr "localhost" --wsport "8545" --wsorigins "*" --datadir "./data" --rinkeby --fast</strong>
   </p>
   <p>Contract attached for first wallet</p>
   <br>
@@ -12,11 +11,7 @@
   <div class="common-buttons">
     <button type="button" (click)="onDeployNewSmartContract()">Deploy smart contract</button>
     <button type="button" (click)="getWalletBalance()">Refresh wallet balance</button>
-    <button type="button" (click)="getContractData()">Get owner count</button>
-  </div>
-
-  <div class="container">
-    <h3>Add new owner <input type="text" placeholder="New owner address" [(ngModel)]="newOwner"></h3>
+    <button type="button" (click)="getContractData()">Get greeting message</button>
   </div>
 
   <div class="wallet-wrapper container">
@@ -28,7 +23,7 @@
         <p> Wallet balance: <span>{{wallets.first.balance}}</span></p>
       </div>
       <div class="controls">
-        <button (click)="addNewOwner('first')">Add new owner in contract</button>
+        <button (click)="changeGreetingMessage('first')">Change greeting message</button>
       </div>
     </div>
 
@@ -40,7 +35,7 @@
         <p> Wallet balance: <span>{{wallets.second.balance}}</span></p>
       </div>
       <div class="controls">
-        <button (click)="addNewOwner('second')">Add new owner in contract</button>
+        <button (click)="changeGreetingMessage('second')">Change greeting message</button>
       </div>
     </div>
   </div>
