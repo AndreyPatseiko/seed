@@ -2,16 +2,24 @@
   <h1>Shared wallets</h1>
   <h3>Instruction</h3>
   <p>1) Install Geth server </p>
-  <p>2) Open terminal and run comand <strong>geth --rpcapi "db,eth,net,web3,personal" --ws --wsaddr "localhost" --wsport
-    "8545" --wsorigins "*" --identity "MyTestNode" --datadir "./data" --rinkeby --fast</strong></p>
+  <p>2) Open terminal and run comand
+    <strong>geth --rpcapi "db,eth,net,web3,personal" --ws --wsaddr "localhost" --wsport "8545" --wsorigins "*"
+      --identity "MyTestNode" --datadir "./data" --rinkeby --fast</strong>
+  </p>
   <p>Contract attached for first wallet</p>
   <br>
 
   <div class="common-buttons">
     <button type="button" (click)="onDeployNewSmartContract()">Deploy smart contract</button>
     <button type="button" (click)="getWalletBalance()">Refresh wallet balance</button>
-    <button type="button" (click)="getContractData()">Get contract data</button>
+    <button type="button" (click)="getContractData()">Get owner count</button>
   </div>
+
+  <h3>Add new owner</h3>
+  <div class="common-buttons">
+    <input type="text" placeholder="New ovner address" [(ngModel)]="newOwner">
+  </div>
+
   <div class="wallet-wrapper container">
     <div class="wallet-info">
       <h2>First wallet</h2>
@@ -21,7 +29,7 @@
         <p> Wallet balance: <span>{{wallets.first.balance}}</span></p>
       </div>
       <div class="controls">
-        <button (click)="changeContractMessage('first')">Change Contract Message</button>
+        <button (click)="addNewOwner('first')">Add new owner in contract</button>
       </div>
     </div>
 
@@ -33,10 +41,11 @@
         <p> Wallet balance: <span>{{wallets.second.balance}}</span></p>
       </div>
       <div class="controls">
-        <button (click)="changeContractMessage('second')">Change Contract Message</button>
+        <button (click)="addNewOwner('second')">Add new owner in contract</button>
       </div>
     </div>
   </div>
+
 
   <div class="container">
     <h3>Terminal</h3>

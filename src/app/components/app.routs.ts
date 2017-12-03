@@ -6,7 +6,7 @@ import {WalletsComponent} from './wallets/wallets.component';
 import {TokensComponent} from './tokens/tokens.component';
 
 const appRouts: Routes = [
-  {path: '', component: WalletsComponent},
+  {path: '', component: WalletsComponent, pathMatch: 'full'},
   {path: 'ui-elements', component: UIPageComponent},
   {path: 'shared-wallet', component: SharedWalletComponent},
   {path: 'tokens', component: TokensComponent},

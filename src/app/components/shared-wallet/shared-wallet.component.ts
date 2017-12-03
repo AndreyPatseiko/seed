@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import Web3 from 'web3';
-import fs from 'node-fs';
-import solc from 'solc'
 
 import {sharedWallet} from '../../../assets/contracts/abi'
 
@@ -14,6 +12,7 @@ import {sharedWallet} from '../../../assets/contracts/abi'
 export class SharedWalletComponent implements OnInit {
   public web3: Web3;
   public terminal = [];
+  public newOwner: string;
   public wallets = {
     first: {
       address: '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b',
@@ -43,9 +42,6 @@ export class SharedWalletComponent implements OnInit {
   ngOnInit(): void {
     this.getWalletBalance();
     this.addListenersForContract();
-    // console.log(fs)
-    // const input = fs.readFile('./assets/contracts/greeting.sol', 'utf8');
-    // console.log(input)
   }
 
   onDeployNewSmartContract(): void {
@@ -88,14 +84,13 @@ export class SharedWalletComponent implements OnInit {
       .catch(err => console.log(err.message));
   }
 
-  changeContractMessage(target: string): void {
-    console.log('Target ', target)
+  addNewOwner(target: string): void {
+    console.log('New owner address ', this.newOwner)
+    console.log('Pay for this transaction ', this.wallets[target].address)
     // unlock account
     this.web3.eth.accounts.wallet.add(this.wallets[target].privateKey);
 
-    // const message = 'HI user number ' + (Math.random() * 100).toFixed(0) + `. From target: ${target}`;
-
-    this.currentSmartContract.methods.addOwner('0x8660B9CC3503D997d67FC773794859691AF0E4Fa').send({
+    this.currentSmartContract.methods.addOwner(this.newOwner).send({
       from: this.wallets[target].address,
       gas: 5700000,
       gasPrice: '300000000'
