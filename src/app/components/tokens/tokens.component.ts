@@ -47,6 +47,7 @@ export class TokensComponent {
       this.isSend = true;
 
       contract.deploy({
+        data: '0x' + tokens.byteCode,
         arguments: [this.count, this.name, this.decimal, this.symbol]
       }).send({
         from: this.owner,

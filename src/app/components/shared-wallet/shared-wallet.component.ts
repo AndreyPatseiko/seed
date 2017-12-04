@@ -90,6 +90,14 @@ export class SharedWalletComponent implements OnInit {
     });
   }
 
+  sendTransaction() {
+
+  }
+
+  confirmTransaction() {
+
+  }
+
   pushTerminalMessage(message: string) {
     this.terminal.push(message);
   }

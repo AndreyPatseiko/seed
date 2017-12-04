@@ -20,11 +20,16 @@
 
 
 
-pragma solidity ^0.4.10;
+pragma solidity ^0.4.18;
 
 
 contract multiowned {
+
+
   // TYPES
+
+
+
   // struct for the status of a pending operation.
 
   struct PendingState {
@@ -36,8 +41,11 @@ contract multiowned {
   uint index;
 
   }
+
   // EVENTS
+
   // this contract only has six types of events: it can accept a confirmation, in which case
+
   // we record owner and operation (hash) alongside it.
 
   event Confirmation(address owner, bytes32 operation);
@@ -56,11 +64,7 @@ contract multiowned {
 
   event RequirementChanged(uint newRequirement);
 
-
-
   // MODIFIERS
-
-
 
   // simple single-sig function modifier.
 
@@ -96,7 +100,7 @@ contract multiowned {
 
   // as well as the selection of addresses capable of confirming them.
 
-  function multiowned(address[] _owners, uint _required) {
+  function multiowned(address[] _owners, uint _required) public {
 
     m_numOwners = _owners.length + 1;
 
@@ -150,7 +154,7 @@ contract multiowned {
 
   // Replaces an owner `_from` with another `_to`.
 
-  function changeOwner(address _from, address _to) onlymanyowners(sha3(msg.data)) external {
+  function changeOwner(address _from, address _to) onlymanyowners(keccak256(msg.data)) external {
 
     if (isOwner(_to)) return;
 
@@ -172,7 +176,7 @@ contract multiowned {
   }
 
 
-  function addOwner(address _owner) onlymanyowners(sha3(msg.data)) external {
+  function addOwner(address _owner) onlymanyowners(keccak256(msg.data)) external {
 
     if (isOwner(_owner)) return;
 
@@ -198,7 +202,7 @@ contract multiowned {
   }
 
 
-  function removeOwner(address _owner) onlymanyowners(sha3(msg.data)) external {
+  function removeOwner(address _owner) onlymanyowners(keccak256(msg.data)) external {
 
     uint ownerIndex = m_ownerIndex[uint(_owner)];
 
@@ -221,7 +225,7 @@ contract multiowned {
   }
 
 
-  function changeRequirement(uint _newRequired) onlymanyowners(sha3(msg.data)) external {
+  function changeRequirement(uint _newRequired) onlymanyowners(keccak256(msg.data)) external {
 
     if (_newRequired > m_numOwners) return;
 
@@ -244,14 +248,14 @@ contract multiowned {
   }
 
 
-  function isOwner(address _addr) returns (bool) {
+  function isOwner(address _addr) public view returns (bool) {
 
     return m_ownerIndex[uint(_addr)] > 0;
 
   }
 
 
-  function hasConfirmed(bytes32 _operation, address _owner) constant returns (bool) {
+  function hasConfirmed(bytes32 _operation, address _owner) public constant returns (bool) {
 
     var pending = m_pending[_operation];
 
@@ -458,7 +462,7 @@ contract daylimit is multiowned {
 
   // constructor - stores initial daily limit and records the present day's index.
 
-  function daylimit(uint _limit) {
+  function daylimit(uint _limit) public {
 
     m_dailyLimit = _limit;
 
@@ -468,7 +472,7 @@ contract daylimit is multiowned {
 
   // (re)sets the daily limit. needs many of the owners to confirm. doesn't alter the amount already spent today.
 
-  function setDailyLimit(uint _newLimit) onlymanyowners(sha3(msg.data)) external {
+  function setDailyLimit(uint _newLimit) onlymanyowners(keccak256(msg.data)) external {
 
     m_dailyLimit = _newLimit;
 
@@ -476,7 +480,7 @@ contract daylimit is multiowned {
 
   // resets the amount already spent today. needs many of the owners to confirm.
 
-  function resetSpentToday() onlymanyowners(sha3(msg.data)) external {
+  function resetSpentToday() onlymanyowners(keccak256(msg.data)) external {
 
     m_spentToday = 0;
 
@@ -578,7 +582,7 @@ contract multisig {
 
   function execute(address _to, uint _value, bytes _data) external returns (bytes32);
 
-  function confirm(bytes32 _h) returns (bool);
+  function confirm(bytes32 _h) public returns (bool);
 
 }
 
@@ -608,6 +612,8 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
+
+
   // METHODS
 
 
@@ -616,21 +622,27 @@ contract Wallet is multisig, multiowned, daylimit {
 
   // the limit to daylimit
 
-  function Wallet(address[] _owners, uint _required, uint _daylimit)
+  function Wallet(address[] _owners, uint _required, uint _daylimit) public
 
   multiowned(_owners, _required) daylimit(_daylimit) {
 
   }
+
+
+
   // kills the contract sending everything to `_to`.
 
-  function kill(address _to) onlymanyowners(sha3(msg.data)) external {
+  function kill(address _to) onlymanyowners(keccak256(msg.data)) external {
 
     selfdestruct(_to);
 
   }
+
+
+
   // gets called when no other function matches
 
-  function() payable {
+  function() public payable {
 
     // just being sent some cash?
 
@@ -639,6 +651,8 @@ contract Wallet is multisig, multiowned, daylimit {
     Deposit(msg.sender, msg.value);
 
   }
+
+
 
   // Outside-visible transact entry point. Executes transaction immediately if below daily spend limit.
 
@@ -666,7 +680,7 @@ contract Wallet is multisig, multiowned, daylimit {
 
     // determine our operation hash.
 
-    _r = sha3(msg.data, block.number);
+    _r = keccak256(msg.data, block.number);
 
     if (!confirm(_r) && m_txs[_r].to == 0) {
 
@@ -682,11 +696,13 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
+
+
   // confirm a transaction through just the hash. we use the previous transactions map, m_txs, in order
 
   // to determine the body of the transaction from the hash provided.
 
-  function confirm(bytes32 _h) onlymanyowners(_h) returns (bool) {
+  function confirm(bytes32 _h) public onlymanyowners(_h) returns (bool) {
 
     if (m_txs[_h].to != 0) {
 
@@ -702,7 +718,11 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
+
+
   // INTERNAL METHODS
+
+
 
   function clearPending() internal {
 
@@ -716,7 +736,12 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
+
+
   // FIELDS
+
+
+
   // pending transactions we have at present.
 
   mapping (bytes32 => Transaction) m_txs;
