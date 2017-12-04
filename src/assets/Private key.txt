@@ -1,0 +1,75 @@
+Wallet 1
+address: 0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b
+pravit key : 0xc293f871deab7fc6bc6c21f5ddd76fa529b10a7ca0b1823b95d3a30ecbdd7657
+
+Wallet 2
+address: 0xb450F8be8C6941d4E20B587926116b2B31369BF2
+pravit key : 0x5b1cefb5141e9c140575f231574f7cd201f9066ebf247bbb6e8dc143164fc9b9
+
+Wallet 3
+address: 64A384963B0B2184AE99fd0F37c2Bf5CB079F76B
+pravit key : 0xdf48655999177484a4c109e93553bc52ae737992b4791015510be5c96aea30b1
+
+
+contract no sign
+address: 0xC29365D1feEbD105354B49992c8FD6d2C1a1Cc57
+
+
+1) address:"0x6809c46B2E72B9DB713B457F635980350cB38aaE"
+blockHash: 0x8988f70e97843f14b041dd8f4e0610fd1017f0fbd577c20ee679b4f31324c170
+blockNumber:1355953
+event:"Confirmation"
+
+2) blockHash: 0x8988f70e97843f14b041dd8f4e0610fd1017f0fbd577c20ee679b4f31324c170
+blockNumber:1355953
+event:"ConfirmationNeeded"
+
+3) after confirm
+address:"0x6809c46B2E72B9DB713B457F635980350cB38aaE"
+blockHash: 0x20c4f116ef01264f6eb2b63a37b88738c6fa459794d559d55479a882365b0a26
+blockNumber:1355968
+event:"Confirmation"
+
+
+Send money from this wallet
+address: 0x4fd55f6A8A3b4BbBcBd8e3C129F88A12f4E67C1a
+privateKey: 0x3981e18719b1401b167d48528674ad8847e8b989912152008bda3a52c993638a
+pass: qweqweQ1
+
+crypto wallet 
+address: 0x8660B9CC3503D997d67FC773794859691AF0E4Fa
+privateKey: 0x8bc632607f806ff3e6b3e983371927899a984bcbf7a228e10c51e78ff5480e87
+pass asdasdA1
+
+Meta mask
+pass: cyberDev1
+12 words : glide ocean guess sick skin spin blue cancel pretty cat jungle ticket
+
+
+2 Second wallet 
+address:"0xdF3BD6d3158D8F0913657102E027255334fE27c1"
+privateKey:"0x9228cd536c1fe5b44fff57b7cadcf0d03d43ba04683e7fe9330ecebf58134837"
+
+LIVE VIEW wallet
+password: liveA1
+
+
+
+2.476468494
+
+
+Test Rpc 
+(0) 0x955883f1ff7f6e81df350b1d7440a0ecdd3734a8
+(1) 0x611a7dcf771740b911dd98374b98fb5ae03ce7eb
+
+(0) 410ba7343b0334248db376d19d18a282a6340f742d46cbf3c7d3332dc8537f30
+(1) 344a4aab7346c397798a417aad3304fe2a46e96f6cf06d19426db04422ff83c2
+
+
+Work wallet save pass
+pass: asdasdA1
+address: "0xA9308B5648934F49538d5f2626BaD0d948774c11",
+privateKey: "0x45ec19edf36a1f897f73042589f23709c8933d657f0899a6311548f2a68ede28"
+
+
+H/5 * * * *

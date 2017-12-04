@@ -571,10 +571,7 @@ contract multisig {
   event ConfirmationNeeded(bytes32 operation, address initiator, uint value, address to, bytes data);
 
 
-
   // FUNCTIONS
-
-
 
   // TODO: document
 
@@ -598,8 +595,6 @@ contract Wallet is multisig, multiowned, daylimit {
 
   // TYPES
 
-
-
   // Transaction structure to remember details of transaction lest it need be saved for a later call.
 
   struct Transaction {
@@ -612,14 +607,9 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
-
-
   // METHODS
 
-
-
   // constructor - just pass on the owner array to the multiowned and
-
   // the limit to daylimit
 
   function Wallet(address[] _owners, uint _required, uint _daylimit) public
@@ -638,8 +628,6 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
-
-
   // gets called when no other function matches
 
   function() public payable {
@@ -655,11 +643,8 @@ contract Wallet is multisig, multiowned, daylimit {
 
 
   // Outside-visible transact entry point. Executes transaction immediately if below daily spend limit.
-
   // If not, goes into multisig process. We provide a hash on return to allow the sender to provide
-
   // shortcuts for the other confirmations (allowing them to avoid replicating the _to, _value
-
   // and _data arguments). They still get the option of using them if they want, anyways.
 
   function execute(address _to, uint _value, bytes _data) external onlyowner returns (bytes32 _r) {
@@ -696,10 +681,7 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
-
-
   // confirm a transaction through just the hash. we use the previous transactions map, m_txs, in order
-
   // to determine the body of the transaction from the hash provided.
 
   function confirm(bytes32 _h) public onlymanyowners(_h) returns (bool) {
@@ -718,11 +700,7 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
-
-
   // INTERNAL METHODS
-
-
 
   function clearPending() internal {
 
@@ -736,12 +714,7 @@ contract Wallet is multisig, multiowned, daylimit {
 
   }
 
-
-
   // FIELDS
-
-
-
   // pending transactions we have at present.
 
   mapping (bytes32 => Transaction) m_txs;

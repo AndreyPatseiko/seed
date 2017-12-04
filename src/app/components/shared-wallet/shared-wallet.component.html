@@ -3,7 +3,9 @@
   <h3>Instruction</h3>
   <p>1) Install Geth server </p>
   <p>2) Open terminal and run comand
-    <strong>geth --rpcapi "db,eth,net,web3,personal" --ws --wsaddr "localhost" --wsport "8545" --wsorigins "*"
+    <strong>geth --rpcapi "db,eth,net,web3,personal"
+      --ws --wsaddr "localhost" --wsport "8546" --wsorigins "*"
+      --rpc --rpcaddr="localhost" --rpcport="8545"
       --identity "MyTestNode" --datadir "./data" --rinkeby --fast</strong>
   </p>
   <p>Contract attached for first wallet</p>
@@ -12,7 +14,7 @@
   <div class="common-buttons">
     <button type="button" (click)="onDeployNewSmartContract()">Deploy smart contract</button>
     <button type="button" (click)="getWalletBalance()">Refresh wallet balance</button>
-    <button type="button" (click)="getContractData()">Get owner count</button>
+    <button type="button" (click)="getContractData()">Get contract data</button>
   </div>
 
   <div class="container">
@@ -29,8 +31,12 @@
       </div>
       <div class="controls">
         <button (click)="addNewOwner('first')">Add new owner in contract</button>
-        <button (click)="sendTransaction('first')">Send transaction</button>
+        <button (click)="sendTransaction('second')">Send transaction!!!</button>
+        <button (click)="sendSingleTransaction('first')">Single transaction</button>
+      </div>
+      <div class="controls">
         <button (click)="confirmTransaction('first')">Confirm transaction</button>
+        <button (click)="hasConfirmed('first')">has Confirmed </button>
       </div>
     </div>
 
@@ -43,12 +49,29 @@
       </div>
       <div class="controls">
         <button (click)="addNewOwner('second')">Add new owner in contract</button>
-
-
+        <button (click)="removeOwner('second')">Remove owner in contract</button>
+      </div>
+      <div class="controls">
+        <button (click)="confirmTransaction('second')">Confirm transaction</button>
+        <button (click)="hasConfirmed('second')">has Confirmed</button>
+        <!--<input type="text" [(ngModel)]="transactionHash" placeholder="transaction hash">-->
       </div>
     </div>
   </div>
+  <div class="container text-center">
+    <input type="text" [(ngModel)]="transactionHash" placeholder="transaction hash">
+  </div>
 
+  <div class="container">
+    <div class="wallet-info">
+      <h2>Third wallet</h2>
+      <div class="info">
+        <p> Wallet address: <span>{{wallets.third.address}} </span></p>
+        <p> Wallet private key: <span>{{wallets.third.privateKey}} </span></p>
+        <p> Wallet balance: <span>{{wallets.third.balance}}</span></p>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <h3>Terminal

@@ -30,10 +30,10 @@ export class WalletsComponent {
 
   constructor(private http: Http) {
     // this.web3 = new Web3('http://192.168.11.214:5145');
-    // this.web3 = this.outWeb3 = new Web3('http://localhost:8545');
+    this.web3 = this.outWeb3 = new Web3('http://localhost:8545');
     // console.log(new WebSocket('ws://127.0.0.1:8545'))
 
-    this.web3 = this.outWeb3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
+    // this.web3 = this.outWeb3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
     // this.outWeb3 = this.web3 = new Web3('https://geth.ethwal.inside.cactussoft.biz');
 
     // const addressContract = '0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0'

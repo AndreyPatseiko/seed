@@ -28,7 +28,7 @@ export class GreetingComponent implements OnInit {
 
 
   constructor() {
-    this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
+    this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'));
     this.smartContract = new this.web3.eth.Contract(greeting.abi, this.wallets.first.address, {
       from: this.wallets.first.address,
       data: '0x' + greeting.byteCode,
