@@ -549,11 +549,7 @@ contract multisig {
 
 
   // EVENTS
-
-
-
   // logged events:
-
   // Funds has arrived into the wallet (record how much).
 
   event Deposit(address _from, uint value);
@@ -594,7 +590,6 @@ contract Wallet is multisig, multiowned, daylimit {
 
 
   // TYPES
-
   // Transaction structure to remember details of transaction lest it need be saved for a later call.
 
   struct Transaction {
