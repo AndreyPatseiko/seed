@@ -476,3 +476,73 @@ export const counter = {
   }],
   byteCode: '60606040526005600055341561001457600080fd5b60fe806100226000396000f3006060604052600436106053576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680634f2be91f1460585780636deebae314606a5780638ada066e14607c575b600080fd5b3415606257600080fd5b606860a2565b005b3415607457600080fd5b607a60b5565b005b3415608657600080fd5b608c60c9565b6040518082815260200191505060405180910390f35b6000808154809291906001019190505550565b600080815480929190600190039190505550565b600080549050905600a165627a7a72305820717a88015fed5e642917fe50066980f49d5d9f85cf7725765c91601d283a44540029'
 }
+
+export const simplePay = {
+  abi: [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pay",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "fundtransfer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getContractBalance",
+      "outputs": [
+        {
+          "name": "balance",
+          "type": "uint256"
+        },
+        {
+          "name": "_address",
+          "type": "address"
+        },
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "payMe",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  byteCode: '6060604052341561000f57600080fd5b61020a8061001e6000396000f300606060405260043610610062576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680631b9265b814610067578063681ca994146100895780636f9fb98a146100ac578063d997ccb31461013b575b600080fd5b61006f61015d565b604051808215151515815260200191505060405180910390f35b341561009457600080fd5b6100aa6004808035906020019091905050610165565b005b34156100b757600080fd5b6100bf6101a8565b604051808481526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001935050505060405180910390f35b6101436101d5565b604051808215151515815260200191505060405180910390f35b600080905090565b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f1935050505015156101a557600080fd5b50565b60008060003073ffffffffffffffffffffffffffffffffffffffff16313033819150925092509250909192565b600060019050905600a165627a7a723058204844d9deec0a31d79e648ab8ffa38ee62becbb57934530fb7219f8d17cb2ba760029'
+}

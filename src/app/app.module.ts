@@ -11,6 +11,7 @@ import {SharedWalletComponent} from './components/shared-wallet/shared-wallet.co
 import {WalletsComponent} from './components/wallets/wallets.component';
 import {TokensComponent} from './components/tokens/tokens.component';
 import {GreetingComponent} from './components/greeting/greeting.component';
+import {SimpleSmartTransactionComponent} from './components/simple-smart-transaction/simple-smart-transaction.component';
 
 // import {TranslateLoader, TranslateModule, TranslateStaticLoader} from "ng2-translate";
 
@@ -22,7 +23,8 @@ import {GreetingComponent} from './components/greeting/greeting.component';
     SharedWalletComponent,
     WalletsComponent,
     TokensComponent,
-    GreetingComponent
+    GreetingComponent,
+    SimpleSmartTransactionComponent
   ],
   imports: [
     BrowserModule,
