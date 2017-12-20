@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import Web3 from 'web3';
-import {simplePay} from '../../../assets/contracts/abi'
+import {simpleTransaction} from '../../../assets/contracts/abi'
 
 @Component({
   selector: 'app-simple-smart-transaction',
@@ -30,15 +30,15 @@ export class SimpleSmartTransactionComponent implements OnInit {
     }
   };
   private smartContract;
-  public smartContractAddress = '0xd264Ec018fd887A5A6A757679f1Fff064d21A507';
+  public smartContractAddress = '0xF40aFae6f4BB39490CFf12C305E5a826d3B2Db0d';
   public currentSmartContract;
 
   constructor() {
     this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'));
-    this.smartContract = new this.web3.eth.Contract(simplePay.abi, this.wallets.first.address, {
+    this.smartContract = new this.web3.eth.Contract(simpleTransaction.abi, this.wallets.first.address, {
       from: this.wallets.first.address,
-      data: '0x' + simplePay.byteCode,
-      gas: 5700000
+      data: '0x' + simpleTransaction.byteCode,
+      gas: 57000000
     });
     console.log(this.smartContract);
   }
@@ -48,17 +48,56 @@ export class SimpleSmartTransactionComponent implements OnInit {
     this.addListenersForContract();
   }
 
+  deposit() {
+    this.web3.eth.accounts.wallet.add(this.wallets.second.privateKey);
+    // Lets deposit 10 ETH something
+    // The 'deposit' function doesn't take any arguments, the amount of ether is passed implicitly
+    this.smartContract.methods.deposit().send({
+      from: this.wallets.second.address,
+      gas: 5700000,
+      gasPrice: '3100000000',
+      value: '300000000000000000'
+    })
+      .then(function (r) {
+        console.log(r)
+      });
+  }
+
+  // Now lets withdraw 5 ETH back
+// 'withdraw' takes one argument - amount of ether to withdraw (in wei)
+//   contract2.methods.withdraw('5000000000000000000').send({from: '0xf70603197169311eef0b4119160e761366ea9a58'})
+// .then(function(r) {
+//     console.log(r)
+//   });
+  balances() {
+    this.smartContract.methods.balances.call()
+      .then(res => console.log(res))
+      .catch(err => console.log(err.message));
+  }
+
+  transfer() {
+    // unlock account
+    this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey);
+
+    this.currentSmartContract.methods.transfer(this.wallets.second.address, 200000000000000000).send({
+      from: this.wallets.first.address,
+      gas: 5700000,
+      gasPrice: '300000000'
+    }).then(res => console.log(res));
+  }
+
+
   onDeployNewSmartContract(): void {
     this.pushTerminalMessage('send new contract into test net');
     // unlock account
     this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey);
 
     this.smartContract.deploy({
-      data: '0x' + simplePay.byteCode,
+      data: '0x' + simpleTransaction.byteCode,
     }).send({
       from: this.wallets.first.address,
-      gas: 5700000,
-      gasPrice: '300000000'
+      gas: 5800000,
+      gasPrice: '3000000000'
     }).bind(this)
       .then(newContractInstance => this.addListenersForContract(newContractInstance.contractAddress))
       .catch(e => console.log(e.message));
@@ -87,7 +126,7 @@ export class SimpleSmartTransactionComponent implements OnInit {
   addListenersForContract(smartContractAddress?: string): void {
     this.smartContractAddress = smartContractAddress ? smartContractAddress : this.smartContractAddress;
     this.pushTerminalMessage('add listen to contract address ' + this.smartContractAddress);
-    this.currentSmartContract = new this.web3.eth.Contract(simplePay.abi, this.smartContractAddress);
+    this.currentSmartContract = new this.web3.eth.Contract(simpleTransaction.abi, this.smartContractAddress);
 
     this.currentSmartContract.events.allEvents()
       .on('data', event => {
@@ -123,7 +162,7 @@ export class SimpleSmartTransactionComponent implements OnInit {
     // unlock account
     this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
 
-    this.currentSmartContract.methods.execute(this.wallets['third'].address, 0.1 * 1e18, '0x' + simplePay.byteCode).send({
+    this.currentSmartContract.methods.execute(this.wallets['third'].address, 0.1 * 1e18, '0x' + simpleTransaction.byteCode).send({
       from: this.wallets[initiator].address,
       gas: 5700000,
       gasPrice: '300000000'
@@ -137,7 +176,7 @@ export class SimpleSmartTransactionComponent implements OnInit {
     // // unlock account
     // this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
     //
-    // this.currentSmartContract.methods.execute(this.wallets['third'].address, 0.5 * 1e18, '0x' + simplePay.byteCode).send({
+    // this.currentSmartContract.methods.execute(this.wallets['third'].address, 0.5 * 1e18, '0x' + simpleTransaction.byteCode).send({
     //   from: this.wallets['first'].address,
     //   gas: 5700000,
     //   gasPrice: '300000000'
