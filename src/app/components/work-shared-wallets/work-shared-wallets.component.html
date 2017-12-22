@@ -1,5 +1,5 @@
 <div class="shared-wallets container">
-  <h1>Pay from smart contract</h1>
+  <h1>Smart contract {{smartContractAddress}}</h1>
   <h3>Instruction</h3>
   <p>1) Install Geth server </p>
   <p>2) Open terminal and run comand
@@ -7,10 +7,13 @@
       --rpc --rpcaddr="localhost" --rpcport="8545"
       --identity "MyTestNode" --datadir "./data" --rinkeby --fast</strong>
   </p>
-  <p>Contract attached for first wallet. This contract deploy from 2 wallets (1,2) and need 2 sing for complite transaction</p>
+  <p>Contract attached for first wallet. This contract deploy from 2 wallets (1,2) and need 2 sing for complite
+    transaction</p>
   <br>
   <p>Contract balance {{contractBalance}} ETH</p>
-
+  <p>
+    <input type="text" [(ngModel)]="inputData">
+  </p>
   <div class="common-buttons">
     <button type="button" (click)="onDeployNewSmartContract()">Deploy NEW smart contract in first wallet</button>
     <button type="button" (click)="getWalletBalance()">Refresh all balance</button>
@@ -28,7 +31,8 @@
     <div class="wallet-info">
       <h2>First wallet</h2>
       <div class="info">
-        <p [ngClass]="wallets.first.transactionStatus === 'pending' ? 'color-red' : 'color-green'"> Transaction Status: {{wallets.first.transactionStatus}}</p>
+        <p [ngClass]="wallets.first.transactionStatus === 'pending' ? 'color-red' : 'color-green'"> Transaction Status:
+          {{wallets.first.transactionStatus}}</p>
         <p> Wallet address: <span>{{wallets.first.address}} </span></p>
         <p> Wallet private key: <span>{{wallets.first.privateKey}} </span></p>
         <p> Wallet balance: <span>{{wallets.first.balance}}</span></p>
@@ -36,13 +40,15 @@
       <div class="controls">
         <button (click)="sendTransaction('first')">Send 0.3 ETH to 3 wallet</button>
         <button (click)="confirmTansaction('first')">Confirm transaction</button>
+        <button (click)="addOwner('first')">add Owner, pay this wallet</button>
       </div>
     </div>
 
     <div class="wallet-info second">
       <h2>Second wallet</h2>
       <div class="info">
-        <p [ngClass]="wallets.second.transactionStatus === 'pending' ? 'color-red' : 'color-green'"> Transaction Status: {{wallets.second.transactionStatus}}</p>
+        <p [ngClass]="wallets.second.transactionStatus === 'pending' ? 'color-red' : 'color-green'"> Transaction Status:
+          {{wallets.second.transactionStatus}}</p>
         <p> Wallet address: <span>{{wallets.second.address}} </span></p>
         <p> Wallet private key: <span>{{wallets.second.privateKey}} </span></p>
         <p> Wallet balance: <span>{{wallets.second.balance}}</span></p>
@@ -60,10 +66,14 @@
     <div class="wallet-info">
       <h2>Third wallet</h2>
       <div class="info">
-        <p [ngClass]="wallets.third.transactionStatus === 'pending' ? 'color-red' : 'color-green'"> Transaction Status: {{wallets.third.transactionStatus}}</p>
+        <p [ngClass]="wallets.third.transactionStatus === 'pending' ? 'color-red' : 'color-green'"> Transaction Status:
+          {{wallets.third.transactionStatus}}</p>
         <p> Wallet address: <span>{{wallets.third.address}} </span></p>
         <p> Wallet private key: <span>{{wallets.third.privateKey}} </span></p>
         <p> Wallet balance: <span>{{wallets.third.balance}}</span></p>
+      </div>
+      <div class="controls">
+        <button (click)="addOwner('third')">add Owner, pay this wallet</button>
       </div>
     </div>
   </div>

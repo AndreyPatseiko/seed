@@ -10,6 +10,7 @@ import {realMultiSingContract} from '../../../assets/contracts/abi'
 
 export class WorkSharedWalletsComponent implements OnInit {
   public contractID = 0;
+  public inputData;
   public web3: Web3;
   public terminal = [];
   public newOwner: string;
@@ -36,7 +37,7 @@ export class WorkSharedWalletsComponent implements OnInit {
     }
   };
   private smartContract;
-  public smartContractAddress = '0x75ba2B522891b1562Fc44F7F20d7a03eEa75Ad43';
+  public smartContractAddress = '0x8Fb832c0C4bd794c63cC3902fD7a496a94B5C0E3';
   public currentSmartContract;
 
   constructor() {
@@ -85,6 +86,20 @@ export class WorkSharedWalletsComponent implements OnInit {
       .catch(err => console.log(err.message));
   }
 
+  addOwner(initiator: string): void {
+    this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
+    console.log(this.inputData);
+    this.currentSmartContract.methods.addOwner(this.inputData).send({
+      from: this.wallets[initiator].address,
+      gas: 25129,
+      gasPrice: '20000000000'
+    })
+      .then(res => {
+        console.log('ADD Owner ', res)
+      })
+      .catch(err => console.log('err from add owner  ', err))
+  }
+
   onDeployNewSmartContract(): void {
     this.pushTerminalMessage('send new contract into test net');
     // unlock account
@@ -95,8 +110,8 @@ export class WorkSharedWalletsComponent implements OnInit {
       arguments: [[this.wallets.first.address, this.wallets.second.address], 2]
     }).send({
       from: this.wallets.first.address,
-      gas: 5800000,
-      gasPrice: '30000000000'
+      gas: 25139,
+      gasPrice: '20000000000'
     }).bind(this)
       .then(newContractInstance => {
         this.addListenersForContract(newContractInstance.contractAddress)
@@ -147,7 +162,7 @@ export class WorkSharedWalletsComponent implements OnInit {
     for (const key in this.wallets) {
       this.currentSmartContract.methods.confirmations(this.contractID, this.wallets[key].address).call()
         .then(res => this.wallets[key].transactionStatus = res ? 'confirm' : 'pending')
-        .catch(err => console.log(err.message));
+        .catch(err => console.log('confirmations err', err.message));
     }
   }
 

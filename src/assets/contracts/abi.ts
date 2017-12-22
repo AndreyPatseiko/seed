@@ -639,22 +639,57 @@ export const realMultiSingContract = {
           "type": "uint256"
         }
       ],
-      "name": "transactions",
+      "name": "owners",
       "outputs": [
         {
-          "name": "destination",
+          "name": "",
           "type": "address"
-        },
+        }
+      ],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "view"
+    },
+    {
+      "constant": false,
+      "inputs": [
         {
-          "name": "value",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "removeOwner",
+      "outputs": [],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "nonpayable"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "transactionId",
           "type": "uint256"
-        },
+        }
+      ],
+      "name": "revokeConfirmation",
+      "outputs": [],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "nonpayable"
+    },
+    {
+      "constant": true,
+      "inputs": [
         {
-          "name": "data",
-          "type": "bytes"
-        },
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isOwner",
+      "outputs": [
         {
-          "name": "executed",
+          "name": "",
           "type": "bool"
         }
       ],
@@ -687,11 +722,20 @@ export const realMultiSingContract = {
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "required",
+      "inputs": [
+        {
+          "name": "pending",
+          "type": "bool"
+        },
+        {
+          "name": "executed",
+          "type": "bool"
+        }
+      ],
+      "name": "getTransactionCount",
       "outputs": [
         {
-          "name": "",
+          "name": "count",
           "type": "uint256"
         }
       ],
@@ -700,13 +744,32 @@ export const realMultiSingContract = {
       "stateMutability": "view"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "addOwner",
+      "outputs": [],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "nonpayable"
+    },
+    {
       "constant": true,
-      "inputs": [],
-      "name": "transactionCount",
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isConfirmed",
       "outputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -734,30 +797,28 @@ export const realMultiSingContract = {
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "MAX_OWNER_COUNT",
-      "outputs": [
+      "inputs": [
         {
           "name": "",
           "type": "uint256"
         }
       ],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "view"
-    },
-    {
-      "constant": true,
-      "inputs": [
+      "name": "transactions",
+      "outputs": [
         {
-          "name": "",
+          "name": "destination",
           "type": "address"
-        }
-      ],
-      "name": "isOwner",
-      "outputs": [
+        },
         {
-          "name": "",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "name": "executed",
           "type": "bool"
         }
       ],
@@ -767,17 +828,12 @@ export const realMultiSingContract = {
     },
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "transactionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "isConfirmed",
+      "inputs": [],
+      "name": "getOwners",
       "outputs": [
         {
           "name": "",
-          "type": "bool"
+          "type": "address[]"
         }
       ],
       "payable": false,
@@ -819,57 +875,6 @@ export const realMultiSingContract = {
       "constant": true,
       "inputs": [
         {
-          "name": "pending",
-          "type": "bool"
-        },
-        {
-          "name": "executed",
-          "type": "bool"
-        }
-      ],
-      "name": "getTransactionCount",
-      "outputs": [
-        {
-          "name": "count",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "view"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getOwners",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address[]"
-        }
-      ],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "view"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "this",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "view"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
           "name": "transactionId",
           "type": "uint256"
         }
@@ -887,17 +892,12 @@ export const realMultiSingContract = {
     },
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "owners",
+      "inputs": [],
+      "name": "transactionCount",
       "outputs": [
         {
           "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -908,66 +908,25 @@ export const realMultiSingContract = {
       "constant": false,
       "inputs": [
         {
-          "name": "transactionId",
+          "name": "_required",
           "type": "uint256"
         }
       ],
-      "name": "executeTransaction",
+      "name": "changeRequirement",
       "outputs": [],
       "payable": false,
       "type": "function",
       "stateMutability": "nonpayable"
     },
     {
-      "anonymous": false,
+      "constant": false,
       "inputs": [
         {
-          "indexed": true,
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnerRemoval",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "sender",
-          "type": "address"
-        },
-        {
-          "indexed": true,
           "name": "transactionId",
           "type": "uint256"
         }
       ],
-      "name": "Confirmation",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnerAddition",
-      "type": "event"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "removeOwner",
+      "name": "confirmTransaction",
       "outputs": [],
       "payable": false,
       "type": "function",
@@ -1001,6 +960,52 @@ export const realMultiSingContract = {
       "stateMutability": "nonpayable"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "MAX_OWNER_COUNT",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "view"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "required",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "view"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "replaceOwner",
+      "outputs": [],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "nonpayable"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -1008,54 +1013,11 @@ export const realMultiSingContract = {
           "type": "uint256"
         }
       ],
-      "name": "revokeConfirmation",
+      "name": "executeTransaction",
       "outputs": [],
       "payable": false,
       "type": "function",
       "stateMutability": "nonpayable"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "transactionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "ExecutionFailure",
-      "type": "event"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_required",
-          "type": "uint256"
-        }
-      ],
-      "name": "changeRequirement",
-      "outputs": [],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "nonpayable"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "transactionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "Submission",
-      "type": "event"
-    },
-    {
-      "payable": true,
-      "type": "fallback",
-      "stateMutability": "payable"
     },
     {
       "inputs": [
@@ -1071,6 +1033,81 @@ export const realMultiSingContract = {
       "payable": false,
       "type": "constructor",
       "stateMutability": "nonpayable"
+    },
+    {
+      "payable": true,
+      "type": "fallback",
+      "stateMutability": "payable"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Confirmation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Revocation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Submission",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Execution",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ExecutionFailure",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -1094,11 +1131,11 @@ export const realMultiSingContract = {
       "inputs": [
         {
           "indexed": true,
-          "name": "transactionId",
-          "type": "uint256"
+          "name": "owner",
+          "type": "address"
         }
       ],
-      "name": "Execution",
+      "name": "OwnerAddition",
       "type": "event"
     },
     {
@@ -1106,63 +1143,12 @@ export const realMultiSingContract = {
       "inputs": [
         {
           "indexed": true,
-          "name": "sender",
+          "name": "owner",
           "type": "address"
-        },
-        {
-          "indexed": true,
-          "name": "transactionId",
-          "type": "uint256"
         }
       ],
-      "name": "Revocation",
+      "name": "OwnerRemoval",
       "type": "event"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "addOwner",
-      "outputs": [],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "nonpayable"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "transactionId",
-          "type": "uint256"
-        }
-      ],
-      "name": "confirmTransaction",
-      "outputs": [],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "nonpayable"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "replaceOwner",
-      "outputs": [],
-      "payable": false,
-      "type": "function",
-      "stateMutability": "nonpayable"
     },
     {
       "anonymous": false,
