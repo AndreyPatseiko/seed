@@ -41,11 +41,15 @@ export class WorkSharedWalletsComponent implements OnInit {
   public currentSmartContract;
 
   constructor() {
+    // this.web3 = new Web3('http://192.168.11.214:5145');
     this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'));
+    // this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://ethwal.inside.cactussoft.biz:5146'));
+    // this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws:///192.168.11.214:5146'));
+    console.log(this.web3);
     this.smartContract = new this.web3.eth.Contract(realMultiSingContract.abi, this.wallets.first.address, {
       from: this.wallets.first.address,
       data: '0x' + realMultiSingContract.byteCode,
-      gas: 57000000
+      gas: 57000000 
     });
     console.log(this.smartContract);
   }

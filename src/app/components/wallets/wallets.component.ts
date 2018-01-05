@@ -27,10 +27,12 @@ export class WalletsComponent {
   tokens;
   tokensImageList;
   tokenContract;
+  convertString;
+  convertBytes;
 
   constructor(private http: Http) {
-    // this.web3 = new Web3('http://192.168.11.214:5145');
-    this.web3 = this.outWeb3 = new Web3('http://localhost:8545');
+    this.web3 = new Web3('http://192.168.11.214:5145');
+    // this.web3 = this.outWeb3 = new Web3('http://localhost:8545');
     // console.log(new WebSocket('ws://127.0.0.1:8545'))
 
     // this.web3 = this.outWeb3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545'));
@@ -60,6 +62,24 @@ export class WalletsComponent {
     //     console.log('tokensImageList ', this.tokensImageList)
     //   })
     // this.initContract();
+  }
+
+
+  convertToByte(val: string): void {
+    this.convertBytes = this.web3.utils.stringToHex(val);
+    const obj = {
+      in: 't',
+      v: '1eth',
+      f: '0xb508cD0de817411097dB7e5d6f5beF22C7D9e32b',
+      t: '0xb450F8be8C6941d4E20B587926116b2B31369BF2',
+      d: 1515146517094,
+      s: 0
+    }
+
+  }
+
+  convertToString(val: string): void {
+    this.convertString = this.web3.utils.hexToUtf8(val);
   }
 
   // createNewWallet() {
