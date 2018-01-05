@@ -37,14 +37,14 @@ export class WorkSharedWalletsComponent implements OnInit {
     }
   };
   private smartContract;
-  public smartContractAddress = '0x8Fb832c0C4bd794c63cC3902fD7a496a94B5C0E3';
+  public smartContractAddress = '0xDe4Ce883F6B393060545A0362bc25Ce96c3D93a7';
   public currentSmartContract;
 
   constructor() {
     // this.web3 = new Web3('http://192.168.11.214:5145');
-    this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'));
+    // this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'));
     // this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://ethwal.inside.cactussoft.biz:5146'));
-    // this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws:///192.168.11.214:5146'));
+    this.web3 = new Web3(new Web3.providers.WebsocketProvider('ws://192.168.11.214:5146'));
     console.log(this.web3);
     this.smartContract = new this.web3.eth.Contract(realMultiSingContract.abi, this.wallets.first.address, {
       from: this.wallets.first.address,
@@ -95,7 +95,7 @@ export class WorkSharedWalletsComponent implements OnInit {
     console.log(this.inputData);
     this.currentSmartContract.methods.addOwner(this.inputData).send({
       from: this.wallets[initiator].address,
-      gas: 25129,
+      gas: 5700000,
       gasPrice: '20000000000'
     })
       .then(res => {
@@ -125,7 +125,7 @@ export class WorkSharedWalletsComponent implements OnInit {
 
   sendContractEther() {
     this.web3.eth.accounts.signTransaction({
-      to: this.smartContractAddress,
+      to: this.smartContractAddress, 
       value: 1000000000000000000,
       gas: 5700000,
       gasPrice: '300000000'

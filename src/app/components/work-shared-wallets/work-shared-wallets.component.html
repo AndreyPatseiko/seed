@@ -54,7 +54,9 @@
         <p> Wallet balance: <span>{{wallets.second.balance}}</span></p>
       </div>
       <div class="controls">
+          <button (click)="sendTransaction('first')">Send 0.3 ETH to 3 wallet</button>
         <button (click)="confirmTansaction('second')">Confirm transaction</button>
+        <button (click)="addOwner('second')">add this Owner, pay this wallet</button>        
       </div>
     </div>
   </div>
