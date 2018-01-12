@@ -17,7 +17,7 @@
   <div class="common-buttons">
     <button type="button" (click)="onDeployNewSmartContract()">Deploy NEW smart contract in first wallet</button>
     <button type="button" (click)="getWalletBalance()">Refresh all balance</button>
-    <!--<button type="button" (click)="getContractData()">Get contract data</button>-->
+    <button type="button" (click)="getContractData()">Get contract data</button>
     <button type="button" (click)="sendContractEther()">Send 1 ETH to contract from FIRST wallet</button>
     <div class="contract-data">
     </div>
@@ -54,7 +54,7 @@
         <p> Wallet balance: <span>{{wallets.second.balance}}</span></p>
       </div>
       <div class="controls">
-          <button (click)="sendTransaction('first')">Send 0.3 ETH to 3 wallet</button>
+          <button (click)="sendTransaction('second')">Send 0.3 ETH to 3 wallet</button>
         <button (click)="confirmTansaction('second')">Confirm transaction</button>
         <button (click)="addOwner('second')">add this Owner, pay this wallet</button>        
       </div>

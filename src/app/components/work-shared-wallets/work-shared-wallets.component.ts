@@ -30,14 +30,14 @@ export class WorkSharedWalletsComponent implements OnInit {
       transactionStatus: undefined
     },
     third: {
-      address: '0x64A384963B0B2184AE99fd0F37c2Bf5CB079F76B',
-      privateKey: '0xdf48655999177484a4c109e93553bc52ae737992b4791015510be5c96aea30b1',
+      address: '0xaDDD15dc59DA77cDC8acC79a89d17a463D2c684B',
+      privateKey: '0xba8ad4fb09e6449349c7e94c8ea42b63ed14227e4bcf81ab90cfa8d3238a6e7b',
       balance: 0,
       transactionStatus: undefined
     }
   };
   private smartContract;
-  public smartContractAddress = '0xDe4Ce883F6B393060545A0362bc25Ce96c3D93a7';
+  public smartContractAddress = '0x6cB349f5aED2497f3483Ac42f8549c73BC9ecf57';
   public currentSmartContract;
 
   constructor() {
@@ -66,10 +66,15 @@ export class WorkSharedWalletsComponent implements OnInit {
       .then(res => console.log('owners list', res))
       .catch(err => console.log(err.message));
     this.currentSmartContract.methods.transactionCount().call()
-      .then(res => {
+      .then(res => {        
+        this.contractID = res;
         console.log('this.contractID ', this.contractID);
-        this.contractID = res - 1;
         this.checkConfirm();
+        for (let i = 0; i <= res; i++) {
+          this.currentSmartContract.methods.transactions(i).call()
+            .then(res => console.log('transaction '+ i, res))
+
+        }
         return false;
       })
       .catch(err => console.log(err.message));
@@ -79,15 +84,37 @@ export class WorkSharedWalletsComponent implements OnInit {
   }
 
   confirmTansaction(initiator: string) {
-    this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
 
-    this.currentSmartContract.methods.confirmTransaction(this.contractID).send({
+    console.log(this.currentSmartContract)
+    const wallet = this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
+    console.log('add', wallet)
+
+    this.currentSmartContract.methods.confirmTransaction(this.contractID -1).send({
       from: this.wallets[initiator].address,
       gas: 5700000,
       gasPrice: '3100000000'
     })
-      .then(res => console.log('confirm ' + initiator, res))
-      .catch(err => console.log(err.message));
+      .then(res => console.log('confirm 111111' + initiator, res))
+      .catch(err => console.log('err 22222' + err.message));
+
+    // Second way 
+
+    //   const transfer = contract.methods.confirmTransaction(confirmData.transactionId);
+    //   const encodedABI = transfer.encodeABI();
+    //   const key = this.encDecService.decryptWalletPrivateKey(confirmData.initiatorAddress, confirmData.jsonPassword);
+    //   const tx = {
+    //     from: confirmData.initiatorAddress,
+    //     to: '0xDe4Ce883F6B393060545A0362bc25Ce96c3D93a7',
+    //     gas: 2000000,
+    //     data: encodedABI
+    //   };
+    //   this.approveTransactionModalElement.close();
+    //   this.uiService.hidePreloader();
+    //
+    //   web3.eth.accounts.signTransaction(tx, key).then(signed => {
+    //     web3.eth.sendSignedTransaction(signed.rawTransaction);
+    //   });
+    // }
   }
 
   addOwner(initiator: string): void {
@@ -107,7 +134,7 @@ export class WorkSharedWalletsComponent implements OnInit {
   onDeployNewSmartContract(): void {
     this.pushTerminalMessage('send new contract into test net');
     // unlock account
-    this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey);
+    this.web3.eth.accounts.wallet.add(this.wallets.first.privateKey); 
 
     this.smartContract.deploy({
       data: '0x' + realMultiSingContract.byteCode,
@@ -141,7 +168,7 @@ export class WorkSharedWalletsComponent implements OnInit {
         });
 
   }
-
+  
 
   addListenersForContract(smartContractAddress?: string): void {
     this.smartContractAddress = smartContractAddress ? smartContractAddress : this.smartContractAddress;
@@ -180,7 +207,7 @@ export class WorkSharedWalletsComponent implements OnInit {
 
   sendTransaction(initiator: string) {
     this.pushTerminalMessage('Try send transaction');
-    // unlock account
+    // unlock account - not working in all account
     this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
 
     this.currentSmartContract.methods.submitTransaction(this.wallets['third'].address, 0.3 * 1e18, '0x').send({
@@ -194,22 +221,7 @@ export class WorkSharedWalletsComponent implements OnInit {
       })
       .catch(err => console.log('err from add transaction  ', err))
   }
-
-  confirmTransaction(initiator: string) {
-    this.pushTerminalMessage('Confirm hash ' + this.transactionHash);
-    // unlock account
-    this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
-
-    this.currentSmartContract.methods.confirm(this.transactionHash)
-      .send({
-        from: this.wallets[initiator].address,
-        gas: 5700000,
-        gasPrice: '300000000'
-      })
-      .then(res => console.log('confirm transaction ', res))
-      .catch(err => console.log('err confirm  ', err))
-  }
-
+  
   pushTerminalMessage(message: string) {
     this.terminal.unshift(message);
   }
