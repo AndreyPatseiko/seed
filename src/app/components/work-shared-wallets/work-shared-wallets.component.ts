@@ -209,8 +209,9 @@ export class WorkSharedWalletsComponent implements OnInit {
     this.pushTerminalMessage('Try send transaction');
     // unlock account - not working in all account
     this.web3.eth.accounts.wallet.add(this.wallets[initiator].privateKey);
-
-    this.currentSmartContract.methods.submitTransaction(this.wallets['third'].address, 0.3 * 1e18, '0x').send({
+    const sendValue = this.inputData ? Number(this.inputData) * 1e18 : 0.1 * 1e18;
+    console.log('sendValue', sendValue)
+    this.currentSmartContract.methods.submitTransaction(this.wallets['third'].address, sendValue, '0x').send({
       from: this.wallets[initiator].address,
       gas: 5700000,
       gasPrice: '300000000'
